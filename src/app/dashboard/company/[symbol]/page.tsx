@@ -2,6 +2,7 @@
 import Button from "@/app/_components/button";
 import CompanyCard from "@/app/_components/companyCard";
 import { IoAdd } from "react-icons/io5";
+import Header from "@/app/_components/page/header";
 
 export default function CompanyPage() {
   return (
@@ -9,7 +10,7 @@ export default function CompanyPage() {
       <header className="flex items-center justify-between py-4">
         <div className="flex flex-col justify-between gap-2">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold">Apple Inc.</h1>
+            <Header hasPadding={false}>Apple Inc.</Header>
             <span className="inline-block rounded-md bg-orange-200 p-1 text-xs text-slate-600">
               Wish List
             </span>

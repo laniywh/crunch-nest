@@ -54,7 +54,6 @@ export default function Sidebar({
         </Link>
 
         <span className="flex items-center gap-1 pl-2 text-sm font-semibold text-slate-400">
-          {/*<MdFormatListBulleted />*/}
           <FaListUl />
           <span>List</span>
         </span>
@@ -62,13 +61,13 @@ export default function Sidebar({
           <Link
             className="block rounded p-2 py-1 hover:bg-slate-200"
             key={list}
-            href={"/"}
+            href={"/dashboard/list/watchlist"}
           >
             {list}
           </Link>
         ))}
         <Link
-          href="/"
+          href="/dashboard/lists"
           className="mb-8 block rounded p-2 text-slate-400 hover:bg-slate-200"
         >
           More

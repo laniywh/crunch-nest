@@ -1,4 +1,5 @@
 import CompanyCard from "@/app/_components/companyCard";
+import CompanyCardList from "@/app/_components/companyCardList";
 
 export default function DashboardPage() {
   const COMPANIES = [
@@ -22,14 +23,11 @@ export default function DashboardPage() {
   return (
     <div>
       <h1 className="py-4 text-3xl font-semibold">Dashboard</h1>
-      <div
-        className="grid gap-4"
-        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))" }}
-      >
+      <CompanyCardList>
         {COMPANIES.map((company) => (
           <CompanyCard key={company.symbol} company={company} />
         ))}
-      </div>
+      </CompanyCardList>
     </div>
   );
 }
