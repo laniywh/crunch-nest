@@ -26,7 +26,7 @@ export default function CompanyPage() {
         </Button>
       </header>
 
-      <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
+      <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} showTable />
     </div>
   );
 }

@@ -1,16 +1,25 @@
 import YoyChart from "@/app/_components/yoyChart";
+import Link from "next/link";
 
 interface Company {
   name: string;
   symbol: string;
 }
 
-export default function CompanyCard({ company }: { company: Company }) {
+export default function CompanyCard({
+  company,
+  showTable = false,
+}: {
+  company: Company;
+  showTable?: boolean;
+}) {
   const { name, symbol } = company;
   return (
-    <div className={"p-4 shadow"}>
+    <div className={"min-w-fit p-4 shadow"}>
       <div className="flex items-center justify-between gap-1">
-        <span className="text-lg font-medium">{name}</span>
+        <span className="text-lg font-medium">
+          <Link href={`/dashboard/company/${symbol}`}>{name}</Link>
+        </span>
         <span className="text-sm text-slate-400">{symbol}</span>
       </div>
 
@@ -46,7 +55,7 @@ export default function CompanyCard({ company }: { company: Company }) {
         </div>
       </div>
 
-      <YoyChart />
+      <YoyChart showTable={showTable} />
     </div>
   );
 }
