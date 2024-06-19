@@ -15,7 +15,7 @@ export default function CompanyCard({
 }) {
   const { name, symbol } = company;
   return (
-    <div className={"min-w-fit p-4 shadow"}>
+    <div className={"p-4 shadow"}>
       <div className="flex items-center justify-between gap-1">
         <span className="text-lg font-medium">
           <Link href={`/dashboard/company/${symbol}`}>{name}</Link>
@@ -55,7 +55,9 @@ export default function CompanyCard({
         </div>
       </div>
 
-      <YoyChart showTable={showTable} />
+      <div className={"w-full overflow-x-scroll"}>
+        <YoyChart showTable={showTable} />
+      </div>
     </div>
   );
 }

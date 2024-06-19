@@ -17,7 +17,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`absolute ${show ? "right-0" : "-right-80"} overflow--y-scroll z-10 h-screen w-60 max-w-screen bg-slate-100 md:static lg:w-80`}
+      className={`absolute ${show ? "right-0" : "-right-[240px]"} overflow--y-scroll z-10 h-screen w-full max-w-[240px] bg-slate-100 md:static`}
       ref={ref}
     >
       <div
@@ -28,7 +28,7 @@ export default function Sidebar({
       </div>
       <Link
         className="inline-block p-4 pb-10 text-lg font-medium"
-        href="/public"
+        href={"/dashboard"}
       >
         CrunchNest
       </Link>
@@ -47,7 +47,7 @@ export default function Sidebar({
           </Link>
         ))}
         <Link
-          href="/"
+          href={"/dashboard/companies"}
           className="mb-8 block rounded p-2 text-slate-400 hover:bg-slate-200"
         >
           More
@@ -67,7 +67,7 @@ export default function Sidebar({
           </Link>
         ))}
         <Link
-          href="/dashboard/lists"
+          href={"/dashboard/lists"}
           className="mb-8 block rounded p-2 text-slate-400 hover:bg-slate-200"
         >
           More
@@ -75,7 +75,7 @@ export default function Sidebar({
 
         <Link
           className={"block rounded p-2 hover:bg-slate-200"}
-          href="/dashboard/settings"
+          href={"/dashboard/settings"}
         >
           Settings
         </Link>

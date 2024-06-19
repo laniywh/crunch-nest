@@ -5,7 +5,7 @@ export default function Button({
   icon,
 }: {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   icon?: React.ReactNode;
 }) {
   return (

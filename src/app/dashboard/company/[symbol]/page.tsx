@@ -3,6 +3,12 @@ import Button from "@/app/_components/button";
 import CompanyCard from "@/app/_components/companyCard";
 import { IoAdd } from "react-icons/io5";
 import Header from "@/app/_components/page/header";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/app/_components/ui/dropdownMenu";
 
 export default function CompanyPage() {
   return (
@@ -17,14 +23,15 @@ export default function CompanyPage() {
           </div>
           <span className="text-sm text-slate-400">APPL</span>
         </div>
-        <Button
-          icon={<IoAdd size={20} />}
-          onClick={() => {
-            console.log("added");
-          }}
-        >
-          Add to Watchlist
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-1 rounded-md bg-slate-200 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-300">
+            <IoAdd size={20} /> Add to Watchlist
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Watchlist</DropdownMenuItem>
+            <DropdownMenuItem>Wish List</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
 
       <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} showTable />
