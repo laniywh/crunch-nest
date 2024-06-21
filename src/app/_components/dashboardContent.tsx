@@ -17,7 +17,7 @@ export default function DashboardContent({
       <div>
         <div className="flex justify-end">
           <FiMenu
-            className={"sm:hidden"}
+            className={"md:hidden"}
             onClick={() => setShowSidebar(true)}
           />
         </div>

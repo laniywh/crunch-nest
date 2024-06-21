@@ -4,24 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c7f5504-ffee-43eb-aa61-07a0eda612a7" name="Changes" comment="add settings page">
-      <change afterPath="$PROJECT_DIR$/components.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/_components/ui/dropdownMenu.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/dashboard/companies/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/ui.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/_components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_components/button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/_components/companyCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_components/companyCard.tsx" afterDir="false" />
+    <list default="true" id="4c7f5504-ffee-43eb-aa61-07a0eda612a7" name="Changes" comment="add dropdown menu for add to watchlist, fix dashboard and update sidebar links">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/_components/dashboardContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_components/dashboardContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/_components/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_components/sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/dashboard/company/[symbol]/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/dashboard/company/[symbol]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/dashboard/company/[symbol]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/_components/yoyChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_components/yoyChart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/dashboard/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/dashboard/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/dashboard/list/[list]/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/dashboard/lists/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +73,7 @@
       <workItem from="1718228477503" duration="14328000" />
       <workItem from="1718339769635" duration="5954000" />
       <workItem from="1718403282431" duration="22277000" />
-      <workItem from="1718677361471" duration="11047000" />
+      <workItem from="1718677361471" duration="18137000" />
     </task>
     <task id="LOCAL-00001" summary="scaffold app using create t3 app">
       <option name="closed" value="true" />
@@ -135,7 +123,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718750815208</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add dropdown menu for add to watchlist, fix dashboard and update sidebar links">
+      <option name="closed" value="true" />
+      <created>1718758826265</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1718758826265</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,6 +162,7 @@
     <MESSAGE value="add list page and refactor common components" />
     <MESSAGE value="add lists page" />
     <MESSAGE value="add settings page" />
-    <option name="LAST_COMMIT_MESSAGE" value="add settings page" />
+    <MESSAGE value="add dropdown menu for add to watchlist, fix dashboard and update sidebar links" />
+    <option name="LAST_COMMIT_MESSAGE" value="add dropdown menu for add to watchlist, fix dashboard and update sidebar links" />
   </component>
 </project>

@@ -92,7 +92,10 @@ export default function YoyChart({
             )}
           </div>
           {new Array(4).fill(0).map((_, index) => (
-            <div className="col-span-11 grid grid-cols-subgrid items-center gap-2 gap-y-0 border-b pb-2 pt-1 text-sm last:border-b-0">
+            <div
+              className="col-span-11 grid grid-cols-subgrid items-center gap-2 gap-y-0 border-b pb-2 pt-1 text-sm last:border-b-0"
+              key={index}
+            >
               <span className="">Net Income</span>
               {new Array(10).fill(0).map((_, index) => (
                 <span key={index}>123M</span>
