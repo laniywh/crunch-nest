@@ -3,14 +3,8 @@ import { MdRemoveRedEye } from "react-icons/md";
 import { FaListUl } from "react-icons/fa";
 import { useClickOutside } from "@/app/_components/hooks/useClickOutside";
 import { IoClose } from "react-icons/io5";
-import { Dispatch, SetStateAction, useCallback } from "react";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 
 export default function Sidebar({
   show,
@@ -23,7 +17,7 @@ export default function Sidebar({
 
   const closeSidebar = useCallback(() => {
     setShow(false);
-  }, []);
+  }, [setShow]);
 
   return (
     <aside
