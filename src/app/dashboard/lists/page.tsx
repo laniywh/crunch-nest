@@ -1,7 +1,7 @@
 "use client";
 import { BsThreeDots } from "react-icons/bs";
 import { RiPencilFill } from "react-icons/ri";
-import Header from "@/app/_components/page/header";
+import Header from "@/components/page/header";
 import Link from "next/link";
 import { useState } from "react";
 

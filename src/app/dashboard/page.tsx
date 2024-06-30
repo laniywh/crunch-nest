@@ -1,5 +1,5 @@
-import CompanyCard from "@/app/_components/companyCard";
-import CompanyCardList from "@/app/_components/companyCardList";
+import CompanyCard from "@/components/companyCard";
+import CompanyCardList from "@/components/companyCardList";
 
 export default function DashboardPage() {
   const COMPANIES = [

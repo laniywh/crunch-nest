@@ -1,6 +1,6 @@
-import Header from "@/app/_components/page/header";
-import CompanyCard from "@/app/_components/companyCard";
-import CompanyCardList from "@/app/_components/companyCardList";
+import Header from "@/components/page/header";
+import CompanyCard from "@/components/companyCard";
+import CompanyCardList from "@/components/companyCardList";
 
 export default function CompaniesPage() {
   return (

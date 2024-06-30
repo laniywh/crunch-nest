@@ -1,4 +1,4 @@
-import YoyChart from "@/app/_components/yoyChart";
+import YoyChart from "@/components/yoyChart";
 import Link from "next/link";
 
 interface Company {

@@ -1,6 +1,6 @@
 "use client";
-import Sidebar from "@/app/_components/sidebar";
-import DashboardContent from "@/app/_components/dashboardContent";
+import Sidebar from "@/components/sidebar";
+import DashboardContent from "@/components/dashboard/dashboardContent";
 import { useState } from "react";
 import { cn } from "@/utils/ui";
 

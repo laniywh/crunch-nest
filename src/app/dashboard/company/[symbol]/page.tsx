@@ -1,14 +1,14 @@
 "use client";
-import Button from "@/app/_components/button";
-import CompanyCard from "@/app/_components/companyCard";
+import Button from "@/components/ui/button";
+import CompanyCard from "@/components/companyCard";
 import { IoAdd } from "react-icons/io5";
-import Header from "@/app/_components/page/header";
+import Header from "@/components/page/header";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/app/_components/ui/dropdownMenu";
+} from "@/components/ui/dropdownMenu";
 
 export default function CompanyPage() {
   return (

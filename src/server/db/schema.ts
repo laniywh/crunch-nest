@@ -8,6 +8,7 @@ import {
   serial,
   timestamp,
   varchar,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -18,17 +19,19 @@ import {
  */
 export const createTable = pgTableCreator((name) => `crunch-nest_${name}`);
 
-export const posts = createTable(
-  "post",
+export const apiKeys = createTable(
+  "api_key",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    key: varchar("key", { length: 256 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
+    userIdIndex: index("user_id_idx").on(example.userId),
+    userIdUniqueIndex: uniqueIndex("user_id_unique_idx").on(example.userId),
+  }),
 );

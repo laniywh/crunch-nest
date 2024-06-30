@@ -1,4 +1,4 @@
-import Search from "@/app/_components/search";
+import Search from "@/components/search";
 import { FiMenu } from "react-icons/fi";
 import { type Dispatch, type ReactNode, type SetStateAction } from "react";
 import { cn } from "@/utils/ui";

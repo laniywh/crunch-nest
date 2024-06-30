@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MdRemoveRedEye } from "react-icons/md";
 import { FaListUl } from "react-icons/fa";
-import { useClickOutside } from "@/app/_components/hooks/useClickOutside";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { IoClose } from "react-icons/io5";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
