@@ -3,6 +3,7 @@ import Button from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { upsertApiKey } from "@/lib/api/client/apiKey";
+import { toast } from "react-toastify";
 
 export default function ApiKeySetting({ hasApiKey }: { hasApiKey: boolean }) {
   const { user } = useUser();
@@ -17,7 +18,7 @@ export default function ApiKeySetting({ hasApiKey }: { hasApiKey: boolean }) {
     try {
       const res = await upsertApiKey(user.id, apiKey);
     } catch (error) {
-      console.error("Error saving API key:", error);
+      toast((error as Error).message, { type: "error" });
     }
   };
   return (
@@ -31,7 +32,6 @@ export default function ApiKeySetting({ hasApiKey }: { hasApiKey: boolean }) {
             type="text"
             className={"block w-full grow rounded border p-2 sm:w-96"}
             value={apiKey}
-            // defaultValue={hasApiKey ? defaultApiKey : ""}
             onChange={(e) => setApiKey(e.target.value)}
           />
           <Button onClick={handleSaveAPIKey}>Save</Button>
