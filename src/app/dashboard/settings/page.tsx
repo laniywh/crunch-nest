@@ -1,16 +1,17 @@
 import Header from "@/components/page/header";
 import ApiKeySetting from "@/components/settings/apiKeySetting";
-import { getHasApiKey } from "@/lib/api/server/apiKey";
+import { getApiKey } from "@/server/services/apiKeys";
 
 export default async function SettingsPage() {
-  let hasApiKey = false;
+  let apiKey: string | undefined;
   let error: string | null = null;
   try {
-    hasApiKey = await getHasApiKey();
+    apiKey = await getApiKey();
   } catch (e) {
     console.error("Error getting API key:", (e as Error).message);
     error = (e as Error).message;
   }
+  const hasApiKey = !!apiKey;
 
   return (
     <div>

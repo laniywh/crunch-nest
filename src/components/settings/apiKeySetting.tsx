@@ -2,7 +2,7 @@
 import Button from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
-import { upsertApiKey } from "@/lib/api/client/apiKey";
+import { upsertApiKey } from "@/client/api/apiKey";
 import { toast } from "react-toastify";
 
 export default function ApiKeySetting({ hasApiKey }: { hasApiKey: boolean }) {

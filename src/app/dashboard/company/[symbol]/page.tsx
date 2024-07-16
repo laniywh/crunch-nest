@@ -1,4 +1,3 @@
-"use client";
 import Button from "@/components/ui/button";
 import CompanyCard from "@/components/companyCard";
 import { IoAdd } from "react-icons/io5";
@@ -9,8 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdownMenu";
+import { fetchAndStoreFinancialReport } from "@/server/services/financialReports";
 
-export default function CompanyPage() {
+export default async function CompanyPage() {
+  const cashFlow = await fetchAndStoreFinancialReport("TSLA", "CASH_FLOW");
+  console.log("cashFlow: ", cashFlow);
+
   return (
     <div>
       <header className="flex items-center justify-between py-4">
