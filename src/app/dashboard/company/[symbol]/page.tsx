@@ -1,5 +1,5 @@
 import Button from "@/components/ui/button";
-import CompanyCard from "@/components/companyCard";
+import CompanyCard from "@/components/companyCard/companyCard";
 import { IoAdd } from "react-icons/io5";
 import Header from "@/components/page/header";
 import {
@@ -8,12 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdownMenu";
-import { fetchAndStoreFinancialReport } from "@/server/services/financialReports";
 
 export default async function CompanyPage() {
-  const cashFlow = await fetchAndStoreFinancialReport("TSLA", "CASH_FLOW");
-  console.log("cashFlow: ", cashFlow);
-
   return (
     <div>
       <header className="flex items-center justify-between py-4">

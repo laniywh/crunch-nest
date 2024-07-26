@@ -1,5 +1,5 @@
 import Header from "@/components/page/header";
-import CompanyCard from "@/components/companyCard";
+import CompanyCard from "@/components/companyCard/companyCard";
 import CompanyCardList from "@/components/companyCardList";
 
 export default function ListPage() {
