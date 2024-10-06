@@ -1,4 +1,4 @@
-import { ReportData } from "@/components/companyCard/types";
+import type { ReportData } from "@/components/companyCard/types";
 
 export default function getLatestNumber(reports: ReportData[]) {
   const sortedReportsAsc = reports.sort((a, b) => a.date.localeCompare(b.date));

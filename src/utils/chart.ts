@@ -1,11 +1,10 @@
 import type { Report } from "@/types";
-export function marinateChartData(reports: Report[]) {
-  const operatingCash = reports.map((report) => ({
+export function marinateChartData(reports: Report[], metricName: string) {
+  const chartData = reports.map((report) => ({
     date: report.fiscalDateEnding,
-    value: report.metrics.find(
-      (metric) => metric.metricName === "operatingCashflow",
-    )?.metricValue,
+    value: report.metrics.find((metric) => metric.metricName === metricName)
+      ?.metricValue,
   }));
 
-  return operatingCash;
+  return chartData;
 }

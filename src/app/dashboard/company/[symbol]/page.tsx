@@ -1,4 +1,3 @@
-import Button from "@/components/ui/button";
 import CompanyCard from "@/components/companyCard/companyCard";
 import { IoAdd } from "react-icons/io5";
 import Header from "@/components/page/header";
