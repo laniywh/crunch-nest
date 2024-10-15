@@ -1,9 +1,13 @@
 // import { Company } from "@/lib/api/types";
 import { db } from "@/server/db";
-import { companies, InsertCompany } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { companies, InsertCompany, SelectCompany } from "@/server/db/schema";
+import { eq, InferSelectModel } from "drizzle-orm";
 
-export async function getCompanyInDb(symbol: string) {
+// type Company = InferSelectModel<typeof companies>;
+
+export async function getCompanyInDb(
+  symbol: string,
+): Promise<SelectCompany | undefined> {
   try {
     const res = await db
       .select()

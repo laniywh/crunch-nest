@@ -4,6 +4,12 @@ import {
   FunctionType,
 } from "@/server/services/thirdParty/alphaVantage/types";
 import { getApiKey } from "@/server/services/apiKeys";
+import { env } from "@/env";
+import {
+  MOCK_BALANCE_SHEET,
+  MOCK_CASH_FLOW,
+  MOCK_INCOME_STATEMENT,
+} from "@/server/services/thirdParty/alphaVantage/mocks";
 
 const API_URL = "https://www.alphavantage.co/query";
 
@@ -11,9 +17,24 @@ export async function fetchFinancialReports(
   symbol: string,
   functionType: FunctionType,
 ) {
-  console.log({ symbol, functionType });
-  const apiKey = await getApiKey();
+  console.log("fetchFinancialReports from av", { symbol, functionType });
 
+  const useMockData = env.USE_MOCK_API == "true";
+  if (useMockData) {
+    console.log("fetching mock reports");
+    switch (functionType) {
+      case "INCOME_STATEMENT":
+        return { ...MOCK_INCOME_STATEMENT, functionType };
+      case "BALANCE_SHEET":
+        return { ...MOCK_BALANCE_SHEET, functionType };
+      case "CASH_FLOW":
+        return { ...MOCK_CASH_FLOW, functionType };
+      default:
+        throw new Error("Unknown function type");
+    }
+  }
+
+  const apiKey = await getApiKey();
   if (!apiKey) {
     throw new Error("Unauthorized");
   }
@@ -26,10 +47,7 @@ export async function fetchFinancialReports(
         apikey: apiKey,
       },
     });
-    // console.log("res", res);
-    return {...res?.data, functionType};
-    // TODO: use real data
-    // return { ...MOCK_REPORTS, functionType };
+    return { ...res?.data, functionType };
   } catch (error) {
     // TODO: handle error
     console.error(error);

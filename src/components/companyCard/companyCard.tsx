@@ -1,49 +1,37 @@
+"use client";
 import YoyChart from "@/components/yoyChart";
 import Link from "next/link";
 import getLatestNumber from "@/components/companyCard/utils/getLatestNumber";
 import numberFormat from "@/utils/numberFormat";
-import type { Report } from "@/types";
-import { fetchAndStoreFinancialReport } from "@/server/services/financialReports";
 import { marinateChartData } from "@/utils/chart";
+import { useReports } from "@/hooks/useReports";
+import useCompany from "@/hooks/useCompany";
 
 interface Company {
   name: string;
   symbol: string;
 }
 
-export default async function CompanyCard({
-  company,
+export default function CompanyCard({
+  symbol,
   showTable = false,
 }: {
-  company: Company;
+  symbol: string;
   showTable?: boolean;
 }) {
-  // const _symbol = "TSLA";
-  const _symbol = company.symbol;
-  const { name, symbol } = company;
-  const operatingCashReportsPromise: Promise<Report[]> =
-    fetchAndStoreFinancialReport(_symbol, "CASH_FLOW");
-  const incomeReportsPromise: Promise<Report[]> = fetchAndStoreFinancialReport(
-    _symbol,
-    "INCOME_STATEMENT",
-  );
-  const balanceSheetReportsPromise: Promise<Report[]> =
-    fetchAndStoreFinancialReport(_symbol, "BALANCE_SHEET");
+  const { data: reports } = useReports(symbol);
+  const { data: company } = useCompany(symbol);
 
-  const operatingCashReports = await operatingCashReportsPromise;
-  const incomeReports = await incomeReportsPromise;
-  const balanceSheetReports = await balanceSheetReportsPromise;
+  if (!reports) return <div>Crunching numbers...</div>;
 
-  const operatingCashData = marinateChartData(
-    operatingCashReports,
-    "operatingCashflow",
-  );
-  const netIncomeData = marinateChartData(incomeReports, "netIncome");
+  const { incomeStatements, balanceSheets, cashFlows } = reports;
+  const operatingCashData = marinateChartData(cashFlows, "operatingCashflow");
+  const netIncomeData = marinateChartData(incomeStatements, "netIncome");
   const bookValueData = marinateChartData(
-    balanceSheetReports,
+    balanceSheets,
     "totalShareholderEquity",
   );
-  const revenueData = marinateChartData(incomeReports, "totalRevenue");
+  const revenueData = marinateChartData(incomeStatements, "totalRevenue");
 
   const latestOperatingCash = numberFormat(getLatestNumber(operatingCashData));
   const latestNetIncome = numberFormat(getLatestNumber(netIncomeData));
@@ -54,7 +42,7 @@ export default async function CompanyCard({
     <div className={"p-4 shadow"}>
       <div className="flex items-center justify-between gap-1">
         <span className="text-lg font-medium">
-          <Link href={`/dashboard/company/${symbol}`}>{name}</Link>
+          <Link href={`/dashboard/company/${symbol}`}>{company?.name}</Link>
         </span>
         <span className="text-sm text-slate-400">{symbol}</span>
       </div>

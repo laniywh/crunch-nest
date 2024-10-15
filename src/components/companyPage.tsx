@@ -11,11 +11,7 @@ import CompanyCard from "@/components/companyCard/companyCard";
 import useCompany from "@/hooks/useCompany";
 import { SelectCompany } from "@/server/db/schema";
 
-export default function CompanyPage({
-  params: { symbol },
-}: {
-  params: { symbol: string };
-}) {
+export default function CompanyPage({ symbol }: { symbol: string }) {
   const { data: company } = useCompany(symbol);
   return (
     <div>

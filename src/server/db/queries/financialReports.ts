@@ -12,7 +12,6 @@ export async function getFinancialReportsInDb(
   functionType: FunctionType,
 ) {
   try {
-    console.log("getDbFinancialReport", { symbol, functionType });
     const res = await db
       .select({
         id: financialReports.id,
@@ -33,7 +32,6 @@ export async function getFinancialReportsInDb(
         ),
       );
 
-    console.log(res);
     return res;
   } catch (error) {
     console.error("Database error:", error);

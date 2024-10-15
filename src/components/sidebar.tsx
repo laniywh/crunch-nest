@@ -138,5 +138,5 @@ const UserSection = () => {
   );
 };
 
-const MOCK_SYMBOLS = ["NVDA", "TSLA", "AAPL", "MSFT", "AMZN"];
+const MOCK_SYMBOLS = ["IBM", "NVDA", "TSLA", "AAPL", "MSFT", "AMZN"];
 const MOCK_LISTS = ["Watchlist", "Wish List"];

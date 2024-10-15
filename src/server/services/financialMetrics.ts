@@ -12,7 +12,6 @@ export async function addFinancialMetrics(
   reportId: number,
 ) {
   const metrics = convertToFinancialMetrics(report, reportId);
-  console.log("metrics", metrics);
 
   try {
     await addFinancialMetricsToDb(metrics);

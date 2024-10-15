@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GeistSans } from "geist/font/sans";
+import Providers from "@/app/providers";
 
 export const metadata = {
   title: "Create T3 App",
@@ -17,9 +17,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" className={`${GeistSans.variable}`}>
-        <body className="overflow-x-hidden">
+    <html lang="en" className={`${GeistSans.variable}`}>
+      <body className="overflow-x-hidden">
+        <Providers>
           {children}
           <ToastContainer
             position="bottom-right"
@@ -33,8 +33,8 @@ export default function RootLayout({
             pauseOnHover
             theme="light"
           />
-        </body>
-      </html>
-    </ClerkProvider>
+        </Providers>
+      </body>
+    </html>
   );
 }

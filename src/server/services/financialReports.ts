@@ -21,11 +21,35 @@ import {
   getFinancialMetrics,
 } from "@/server/services/financialMetrics";
 
+export async function fetchAllFinancialReports(symbol: string) {
+  try {
+    // Create an array of promises for fetching the reports
+    const reportTypes: ReportType[] = [
+      "INCOME_STATEMENT",
+      "BALANCE_SHEET",
+      "CASH_FLOW",
+    ];
+    const promises = reportTypes.map((reportType) =>
+      fetchAndStoreFinancialReport(symbol, reportType),
+    );
+
+    // Wait for all promises to resolve
+    const [incomeStatements, balanceSheets, cashFlows] =
+      await Promise.all(promises);
+
+    return { incomeStatements, balanceSheets, cashFlows };
+  } catch (error) {
+    console.error("Error fetching financial reports:", error);
+    throw new Error("Failed to fetch all financial reports");
+  }
+}
+
 export async function fetchAndStoreFinancialReport(
   symbol: string,
   reportType: ReportType,
 ) {
-  console.log("fetchAndStoreFinancialReport...");
+  if (!symbol || !reportType) throw new Error("Missing symbol or report type");
+
   // check from db first
   let reports = await getFinancialReportsInDb(symbol, reportType);
 
@@ -41,13 +65,10 @@ export async function fetchAndStoreFinancialReport(
     reports = await getFinancialReportsInDb(symbol, reportType);
   }
 
-  console.log("reports", reports);
-
   return getReportsAndMetrics(reports);
 }
 
 export async function getReportsAndMetrics(reports: SelectFinancialReport[]) {
-  console.log("getReportsAndMetrics...");
   const promises = [];
   const reportsResult: (SelectFinancialReport & {
     metrics: SelectFinancialMetric[];
@@ -58,7 +79,6 @@ export async function getReportsAndMetrics(reports: SelectFinancialReport[]) {
   }
 
   const reportsMetrics = await Promise.all(promises);
-  console.log("resolved reportsMetrics", reportsMetrics);
 
   for (const report of reports) {
     reportsResult.push({ ...report, metrics: reportsMetrics.shift() || [] });
@@ -71,7 +91,6 @@ export async function saveFinancialReports(
   reports: AV_FinancialReports,
   reportType: ReportType,
 ) {
-  console.log("saveFinancialReports...", reports);
   // check if company exists in db
   const symbol = reports.symbol;
 
@@ -79,13 +98,10 @@ export async function saveFinancialReports(
     | Partial<SelectCompany>
     | undefined;
 
-  console.log("company", company);
-
   // if not, fetch company from API
   let savedCompany: { id: number } | undefined;
   if (!company) {
     const companyRes = await fetchCompany(symbol);
-    console.log("apiCompany", companyRes);
 
     if (!companyRes) {
       throw new Error("Company not found in API");
@@ -98,7 +114,6 @@ export async function saveFinancialReports(
     }
   }
 
-  console.log("saving reports...", reports);
   // save annual reports
   for (const report of reports?.annualReports || []) {
     const newReport = await addFinancialReport(

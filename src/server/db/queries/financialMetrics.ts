@@ -19,15 +19,12 @@ export async function addFinancialMetricsToDb(
 }
 
 export async function getFinancialMetricsInDb(reportId: number) {
-  console.log("getFinancialMetrics");
-
   try {
     const metrics = await db
       .select()
       .from(financialMetrics)
       .where(eq(financialMetrics.reportId, reportId));
 
-    console.log(`report id ${reportId} metrics`, metrics);
     return metrics;
   } catch (error) {
     console.error("Database error:", error);
