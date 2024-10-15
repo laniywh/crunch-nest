@@ -7,8 +7,8 @@ export default function transformToTableData(reports: ReportData[]) {
     const item = reports[i];
     const prevItem = reports[i - 1];
     if (item && prevItem) {
-      const prevValue = Number(prevItem.value);
-      const currentValue = Number(item.value);
+      const prevValue = Number(prevItem.value ?? 0);
+      const currentValue = Number(item.value ?? 0);
       const growth = calculateGrowth(currentValue, prevValue);
       data.push({ date: item.date, value: currentValue, growth });
     }
