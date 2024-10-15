@@ -1,5 +1,6 @@
+"use client";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FiSearch } from "react-icons/fi";
 import {
   Dialog,
@@ -15,18 +16,14 @@ export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement your search logic here
     console.log("Searching for:", searchTerm);
-    if (isMounted && searchTerm) {
-      void router.push(`/dashboard/company/${searchTerm}`);
+    if (searchTerm) {
+      router.push(`/dashboard/company/${searchTerm}`);
+      setOpen(false);
     }
   };
 
