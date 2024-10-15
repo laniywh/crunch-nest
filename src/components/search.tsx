@@ -8,17 +8,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Button from "@/components/ui/button";
+import { useRouter } from "next/router";
 
 export default function Search() {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement your search logic here
     console.log("Searching for:", searchTerm);
-    setOpen(false);
+    if (searchTerm) {
+      void router.push(`/dashboard/company/${searchTerm}`);
+    }
   };
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
