@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/router";
 import { FiSearch } from "react-icons/fi";
 import {
   Dialog,
