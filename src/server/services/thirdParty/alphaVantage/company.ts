@@ -12,7 +12,7 @@ export async function fetchCompany(symbol: string) {
   console.log("useMockData", useMockData);
   if (useMockData) {
     console.log("fetching mock company");
-    return convertToCompany(MOCK_COMPANY);
+    return convertToCompany({ ...MOCK_COMPANY, Symbol: symbol });
   }
 
   const apiKey = await getApiKey();

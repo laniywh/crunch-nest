@@ -24,11 +24,11 @@ export async function fetchFinancialReports(
     console.log("fetching mock reports");
     switch (functionType) {
       case "INCOME_STATEMENT":
-        return { ...MOCK_INCOME_STATEMENT, functionType };
+        return { ...MOCK_INCOME_STATEMENT, symbol, functionType };
       case "BALANCE_SHEET":
-        return { ...MOCK_BALANCE_SHEET, functionType };
+        return { ...MOCK_BALANCE_SHEET, symbol, functionType };
       case "CASH_FLOW":
-        return { ...MOCK_CASH_FLOW, functionType };
+        return { ...MOCK_CASH_FLOW, symbol, functionType };
       default:
         throw new Error("Unknown function type");
     }
