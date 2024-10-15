@@ -23,6 +23,24 @@ import {
 
 export async function fetchAllFinancialReports(symbol: string) {
   try {
+    // Check if company exists in db
+    let company = await getCompanyInDb(symbol);
+
+    // If not, fetch company from API
+    if (!company) {
+      const companyRes = await fetchCompany(symbol);
+
+      if (!companyRes) {
+        throw new Error("Company not found in API");
+      }
+
+      // Add company to db
+      company = await addCompanyToDb(companyRes);
+      if (!company?.id) {
+        throw new Error("Error adding company to db");
+      }
+    }
+
     // Create an array of promises for fetching the reports
     const reportTypes: ReportType[] = [
       "INCOME_STATEMENT",
@@ -30,7 +48,7 @@ export async function fetchAllFinancialReports(symbol: string) {
       "CASH_FLOW",
     ];
     const promises = reportTypes.map((reportType) =>
-      fetchAndStoreFinancialReport(symbol, reportType),
+      fetchAndStoreFinancialReport(symbol, reportType, company.id),
     );
 
     // Wait for all promises to resolve
@@ -47,13 +65,14 @@ export async function fetchAllFinancialReports(symbol: string) {
 export async function fetchAndStoreFinancialReport(
   symbol: string,
   reportType: ReportType,
+  companyId: number,
 ) {
   if (!symbol || !reportType) throw new Error("Missing symbol or report type");
 
-  // check from db first
+  // Check from db first
   let reports = await getFinancialReportsInDb(symbol, reportType);
 
-  // not in db, fetch from 3rd party API
+  // Not in db, fetch from 3rd party API
   if (!reports?.length) {
     const apiReports = await fetchFinancialReports(symbol, reportType);
 
@@ -61,7 +80,7 @@ export async function fetchAndStoreFinancialReport(
       throw new Error("No reports found from API");
     }
 
-    await saveFinancialReports(apiReports, reportType);
+    await saveFinancialReports(apiReports, reportType, companyId);
     reports = await getFinancialReportsInDb(symbol, reportType);
   }
 
@@ -90,35 +109,13 @@ export async function getReportsAndMetrics(reports: SelectFinancialReport[]) {
 export async function saveFinancialReports(
   reports: AV_FinancialReports,
   reportType: ReportType,
+  companyId: number,
 ) {
-  // check if company exists in db
-  const symbol = reports.symbol;
-
-  let company = (await getCompanyInDb(symbol)) as
-    | Partial<SelectCompany>
-    | undefined;
-
-  // if not, fetch company from API
-  let savedCompany: { id: number } | undefined;
-  if (!company) {
-    const companyRes = await fetchCompany(symbol);
-
-    if (!companyRes) {
-      throw new Error("Company not found in API");
-    }
-
-    // add company to db
-    company = await addCompanyToDb(companyRes);
-    if (!company?.id) {
-      throw new Error("Error adding company to db");
-    }
-  }
-
-  // save annual reports
+  // Save annual reports
   for (const report of reports?.annualReports || []) {
     const newReport = await addFinancialReport(
       report,
-      company!.id as number,
+      companyId,
       reportType,
       "ANNUAL",
     );
@@ -126,7 +123,7 @@ export async function saveFinancialReports(
     if (!newReport) {
       throw new Error("Error adding financial report");
     }
-    // add financial metrics
+    // Add financial metrics
     await addFinancialMetrics(report, newReport?.id as number);
   }
 
