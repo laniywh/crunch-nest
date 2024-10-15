@@ -9,7 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Button from "@/components/ui/button";
-import { useRouter } from "next/router";
 
 export default function Search() {
   const [open, setOpen] = useState(false);
