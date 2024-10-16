@@ -1,8 +1,9 @@
 import { getApiKey } from "@/server/services/apiKeys";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import type { AxiosResponse } from "axios";
 import { env } from "@/env";
-import { InsertCompany } from "@/server/db/schema";
-import { AV_Company } from "@/server/services/thirdParty/alphaVantage/types";
+import type { InsertCompany } from "@/server/db/schema";
+import type { AV_Company } from "@/server/services/thirdParty/alphaVantage/types";
 import { MOCK_COMPANY } from "@/server/services/thirdParty/alphaVantage/mocks";
 
 export async function fetchCompany(symbol: string) {
