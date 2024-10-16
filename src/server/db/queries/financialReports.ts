@@ -1,10 +1,7 @@
-import {
-  companies,
-  financialReports,
-  InsertFinancialReport,
-} from "@/server/db/schema";
+import type { InsertFinancialReport } from "@/server/db/schema";
+import { companies, financialReports } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { FunctionType } from "@/server/services/thirdParty/alphaVantage/types";
+import type { FunctionType } from "@/server/services/thirdParty/alphaVantage/types";
 import { and, Column, eq, Table } from "drizzle-orm";
 
 export async function getFinancialReportsInDb(

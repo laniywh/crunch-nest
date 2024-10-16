@@ -1,5 +1,6 @@
 import { db } from "@/server/db";
-import { financialMetrics, InsertFinancialMetric } from "@/server/db/schema";
+import type { InsertFinancialMetric } from "@/server/db/schema";
+import { financialMetrics } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function addFinancialMetricsToDb(
