@@ -1,4 +1,4 @@
-import { ReportType } from "@/types";
+import type { ReportType } from "@/types";
 
 export type FunctionType = ReportType;
 
