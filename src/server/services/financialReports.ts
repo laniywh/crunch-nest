@@ -35,7 +35,7 @@ export async function fetchAllFinancialReports(symbol: string) {
       }
     } else {
       // Update lastViewedAt for existing company
-      company = await updateCompanyLastViewed(company.id as number);
+      company = await updateCompanyLastViewed(company.id);
     }
 
     // Create an array of promises for fetching the reports
@@ -98,10 +98,10 @@ export async function getReportsAndMetrics(reports: SelectFinancialReport[]) {
   const promises = reports.map((report) => getFinancialMetrics(report.id));
   const reportsMetrics = await Promise.all(promises);
 
-  return reports.map((report, index): SelectFinancialReport => ({
+  return reports.map((report, index) => ({
     ...report,
     metrics: reportsMetrics[index] ?? [],
-  }));
+  })) as SelectFinancialReport[];
 }
 
 export async function saveFinancialReports(
