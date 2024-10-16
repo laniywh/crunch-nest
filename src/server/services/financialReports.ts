@@ -53,7 +53,7 @@ export async function fetchAllFinancialReports(symbol: string) {
       await Promise.all(promises);
 
     return { incomeStatements, balanceSheets, cashFlows };
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Error fetching financial reports:", error);
     throw new Error("Failed to fetch all financial reports");
   }
