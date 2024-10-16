@@ -5,15 +5,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdownMenu";
 import { IoAdd } from "react-icons/io5";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { useState } from "react";
+import { CreateListDialog } from "./createListDialog";
 import { useCreateUserListMutation } from "@/hooks/useCreateUserListMutation";
 import type { UserList } from "@/server/db/schema";
 
@@ -55,34 +48,11 @@ export function AddToListDropdown({ userLists }: { userLists?: UserList[] }) {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create a new list</DialogTitle>
-            <DialogDescription>
-              Enter the name for your new list.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <input
-              type="text"
-              value={newListName}
-              onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="New list name"
-            />
-          </div>
-          <DialogFooter>
-            <button
-              onClick={handleCreateList}
-              disabled={!isInputValid}
-              className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-400"
-            >
-              Create
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <CreateListDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onCreateList={createUserList}
+      />
     </>
   );
 }
