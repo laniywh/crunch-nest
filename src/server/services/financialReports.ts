@@ -1,25 +1,25 @@
-import {
+import type {
   AV_FinancialReport,
   AV_FinancialReports,
 } from "@/server/services/thirdParty/alphaVantage/types";
+import type { SelectCompany, SelectFinancialReport } from "@/server/db/schema";
 import {
-  SelectCompany,
-  SelectFinancialMetric,
-  SelectFinancialReport,
-} from "@/server/db/schema";
-import { addCompanyToDb, getCompanyInDb } from "@/server/db/queries/companies";
-import { fetchCompany } from "@/server/services/thirdParty/alphaVantage/company";
-import { fetchFinancialReports } from "@/server/services/thirdParty/alphaVantage/financialReports";
+  addCompanyToDb,
+  getCompanyInDb,
+  updateCompanyLastViewedInDb,
+} from "../db/queries/companies";
+import { fetchCompany } from "../services/thirdParty/alphaVantage/company";
+import { fetchFinancialReports } from "../services/thirdParty/alphaVantage/financialReports";
 import {
   addFinancialReportToDb,
   getFinancialReportsInDb,
-} from "@/server/db/queries/financialReports";
-import { ReportFrequency, ReportType } from "@/types";
-import { convertToFinancialReport } from "@/server/services/thirdParty/alphaVantage/mappers/financialReportMapper";
+} from "../db/queries/financialReports";
+import { ReportFrequency, ReportType } from "../../types";
+import { convertToFinancialReport } from "../services/thirdParty/alphaVantage/mappers/financialReportMapper";
 import {
   addFinancialMetrics,
   getFinancialMetrics,
-} from "@/server/services/financialMetrics";
+} from "../services/financialMetrics";
 
 export async function fetchAllFinancialReports(symbol: string) {
   try {
@@ -34,11 +34,17 @@ export async function fetchAllFinancialReports(symbol: string) {
         throw new Error("Company not found in API");
       }
 
-      // Add company to db
-      company = await addCompanyToDb(companyRes);
-      if (!company?.id) {
+      // Add company to db with current timestamp as lastViewedAt
+      company = await addCompanyToDb({
+        ...companyRes,
+        lastViewedAt: new Date(),
+      });
+      if (!company) {
         throw new Error("Error adding company to db");
       }
+    } else {
+      // Update lastViewedAt for existing company
+      company = await updateCompanyLastViewed(company.id);
     }
 
     // Create an array of promises for fetching the reports
@@ -60,6 +66,16 @@ export async function fetchAllFinancialReports(symbol: string) {
     console.error("Error fetching financial reports:", error);
     throw new Error("Failed to fetch all financial reports");
   }
+}
+
+async function updateCompanyLastViewed(
+  companyId: number,
+): Promise<SelectCompany> {
+  const updatedCompany = await updateCompanyLastViewedInDb(companyId);
+  if (!updatedCompany) {
+    throw new Error("Failed to update company's last viewed timestamp");
+  }
+  return updatedCompany;
 }
 
 export async function fetchAndStoreFinancialReport(
@@ -88,22 +104,13 @@ export async function fetchAndStoreFinancialReport(
 }
 
 export async function getReportsAndMetrics(reports: SelectFinancialReport[]) {
-  const promises = [];
-  const reportsResult: (SelectFinancialReport & {
-    metrics: SelectFinancialMetric[];
-  })[] = [];
-  for (const report of reports) {
-    const metrics = getFinancialMetrics(report.id);
-    promises.push(metrics);
-  }
-
+  const promises = reports.map((report) => getFinancialMetrics(report.id));
   const reportsMetrics = await Promise.all(promises);
 
-  for (const report of reports) {
-    reportsResult.push({ ...report, metrics: reportsMetrics.shift() || [] });
-  }
-
-  return reportsResult;
+  return reports.map((report, index) => ({
+    ...report,
+    metrics: reportsMetrics[index] ?? [],
+  }));
 }
 
 export async function saveFinancialReports(
@@ -112,7 +119,7 @@ export async function saveFinancialReports(
   companyId: number,
 ) {
   // Save annual reports
-  for (const report of reports?.annualReports || []) {
+  for (const report of reports?.annualReports ?? []) {
     const newReport = await addFinancialReport(
       report,
       companyId,
@@ -124,7 +131,7 @@ export async function saveFinancialReports(
       throw new Error("Error adding financial report");
     }
     // Add financial metrics
-    await addFinancialMetrics(report, newReport?.id as number);
+    await addFinancialMetrics(report, newReport.id);
   }
 
   // TODO: save quarterly reports

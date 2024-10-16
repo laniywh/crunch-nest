@@ -1,9 +1,10 @@
-// import { Company } from "@/lib/api/types";
 import { db } from "@/server/db";
-import { companies, InsertCompany, SelectCompany } from "@/server/db/schema";
-import { eq, InferSelectModel } from "drizzle-orm";
-
-// type Company = InferSelectModel<typeof companies>;
+import {
+  companies,
+  type InsertCompany,
+  type SelectCompany,
+} from "@/server/db/schema";
+import { eq, desc } from "drizzle-orm";
 
 export async function getCompanyInDb(
   symbol: string,
@@ -14,22 +15,67 @@ export async function getCompanyInDb(
       .from(companies)
       .where(eq(companies.symbol, symbol));
 
-    return res?.[0];
+    return res[0];
   } catch (error) {
     console.error("Database error:", error);
     throw new Error("Error getting company");
   }
 }
 
-export async function addCompanyToDb(company: InsertCompany) {
+export async function addCompanyToDb(
+  company: InsertCompany,
+): Promise<SelectCompany> {
   try {
-    const res = await db
+    const insertedCompanies = await db
       .insert(companies)
       .values(company)
-      .returning({ id: companies.id });
-    return res[0];
+      .returning();
+
+    if (!insertedCompanies.length) {
+      throw new Error("No company was inserted");
+    }
+
+    return insertedCompanies[0] as SelectCompany;
   } catch (error) {
     console.error("Database error:", error);
     throw new Error("Error adding company");
+  }
+}
+
+export async function updateCompanyLastViewedInDb(
+  companyId: number,
+): Promise<SelectCompany> {
+  try {
+    const updatedCompanies = await db
+      .update(companies)
+      .set({ lastViewedAt: new Date() })
+      .where(eq(companies.id, companyId))
+      .returning();
+
+    if (!updatedCompanies.length) {
+      throw new Error("No company was updated");
+    }
+
+    return updatedCompanies[0] as SelectCompany;
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Error updating company last viewed timestamp");
+  }
+}
+
+export async function getRecentlyViewedCompanies(
+  limit = 5,
+): Promise<SelectCompany[]> {
+  try {
+    const recentCompanies = await db
+      .select()
+      .from(companies)
+      .orderBy(desc(companies.lastViewedAt))
+      .limit(limit);
+
+    return recentCompanies;
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Error fetching recently viewed companies");
   }
 }

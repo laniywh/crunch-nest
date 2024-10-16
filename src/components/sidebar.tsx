@@ -5,6 +5,12 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { IoClose } from "react-icons/io5";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import {
+  useRecentCompanies,
+  type RecentCompany,
+} from "@/hooks/useRecentCompanies";
+
+const MOCK_LISTS = ["Watchlist", "Wish List"];
 
 export default function Sidebar({
   show,
@@ -14,6 +20,11 @@ export default function Sidebar({
   setShow: Dispatch<SetStateAction<boolean>>;
 }) {
   const ref = useClickOutside(() => setShow(false));
+  const {
+    data: recentlyViewedCompanies,
+    isLoading,
+    error,
+  } = useRecentCompanies();
 
   const closeSidebar = useCallback(() => {
     setShow(false);
@@ -50,17 +61,26 @@ export default function Sidebar({
               <span id={"recently-viewed"}>Recently Viewed</span>
             </span>
             <ul>
-              {MOCK_SYMBOLS.map((symbol) => (
-                <li key={symbol}>
-                  <Link
-                    className="block rounded p-2 py-1 hover:bg-slate-200"
-                    href={`/dashboard/company/${symbol}`}
-                    onClick={closeSidebar}
-                  >
-                    {symbol}
-                  </Link>
-                </li>
-              ))}
+              {isLoading ? (
+                <li>Loading...</li>
+              ) : error ? (
+                <li>Error loading recent companies</li>
+              ) : (
+                recentlyViewedCompanies?.map((company: RecentCompany) => (
+                  <li key={company.symbol}>
+                    <Link
+                      className="flex items-center justify-between rounded p-2 py-1 hover:bg-slate-200"
+                      href={`/dashboard/company/${company.symbol}`}
+                      onClick={closeSidebar}
+                    >
+                      <span className="truncate">{company.name}</span>
+                      <span className="ml-2 rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
+                        {company.symbol}
+                      </span>
+                    </Link>
+                  </li>
+                ))
+              )}
               <li>
                 <Link
                   href={"/dashboard/companies"}
@@ -137,6 +157,3 @@ const UserSection = () => {
     </SignedIn>
   );
 };
-
-const MOCK_SYMBOLS = ["IBM", "NVDA", "TSLA", "AAPL", "MSFT", "AMZN"];
-const MOCK_LISTS = ["Watchlist", "Wish List"];

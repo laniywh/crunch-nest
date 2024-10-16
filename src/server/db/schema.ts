@@ -55,6 +55,7 @@ export const companies = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    lastViewedAt: timestamp("last_viewed_at", { withTimezone: true }),
   },
   (table) => ({
     symbolUniqueIndex: uniqueIndex("symbol_unique_idx").on(table.symbol),

@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import Header from "@/components/page/header";
 import {
   DropdownMenu,
@@ -10,6 +11,7 @@ import { IoAdd } from "react-icons/io5";
 import CompanyCard from "@/components/companyCard/companyCard";
 import useCompany from "@/hooks/useCompany";
 import { SelectCompany } from "@/server/db/schema";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CompanyPage({
   params: { symbol },
@@ -17,6 +19,28 @@ export default function CompanyPage({
   params: { symbol: string };
 }) {
   const { data: company } = useCompany(symbol);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (company) {
+      // Update the React Query cache
+      queryClient.setQueryData<SelectCompany[]>(
+        ["recentCompanies"],
+        (oldData) => {
+          const newCompany: SelectCompany = {
+            ...company,
+            lastViewedAt: new Date(),
+          };
+          if (!oldData) return [newCompany];
+          const filteredData = oldData.filter(
+            (c) => c.symbol !== company.symbol,
+          );
+          return [newCompany, ...filteredData].slice(0, 5); // Keep only the 5 most recent
+        },
+      );
+    }
+  }, [company, queryClient]);
+
   return (
     <div>
       <PageHeader company={company} />
