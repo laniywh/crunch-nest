@@ -21,7 +21,7 @@ export default function Search() {
     e.preventDefault();
     // Implement your search logic here
     console.log("Searching for:", searchTerm);
-    if (searchTerm) {
+    if (searchTerm.trim()) {
       router.push(`/dashboard/company/${searchTerm}`);
       setOpen(false);
     }

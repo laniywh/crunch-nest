@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllFinancialReports } from "@/server/services/financialReports";
 import axios from "axios";
 
 export function useReports(symbol: string) {
