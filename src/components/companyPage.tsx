@@ -9,7 +9,7 @@ import {
 import { IoAdd } from "react-icons/io5";
 import CompanyCard from "@/components/companyCard/companyCard";
 import useCompany from "@/hooks/useCompany";
-import { SelectCompany } from "@/server/db/schema";
+import type { SelectCompany } from "@/server/db/schema";
 
 export default function CompanyPage({ symbol }: { symbol: string }) {
   const { data: company } = useCompany(symbol);

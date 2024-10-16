@@ -2,7 +2,6 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { fetchAllFinancialReports } from "@/server/services/financialReports";
-import type { FinancialReports } from "@/types/financialReports";
 
 export async function GET(req: NextRequest) {
   const user = auth();
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const reports: FinancialReports = await fetchAllFinancialReports(symbol);
+    const reports = await fetchAllFinancialReports(symbol);
     return NextResponse.json(reports);
   } catch (error) {
     console.error("Error fetching financial reports:", error);
