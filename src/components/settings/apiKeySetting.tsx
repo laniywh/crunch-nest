@@ -9,14 +9,14 @@ export default function ApiKeySetting({ hasApiKey }: { hasApiKey: boolean }) {
   const { user } = useUser();
   const defaultApiKey = "***********************";
   const [apiKey, setApiKey] = useState(hasApiKey ? defaultApiKey : "");
-  const handleSaveAPIKey = async (e: any) => {
+  const handleSaveAPIKey = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user) {
       return;
     }
     try {
-      const res = await upsertApiKey(user.id, apiKey);
+      await upsertApiKey(user.id, apiKey);
     } catch (error) {
       toast((error as Error).message, { type: "error" });
     }
