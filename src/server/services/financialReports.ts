@@ -35,7 +35,7 @@ export async function fetchAllFinancialReports(symbol: string) {
       }
     } else {
       // Update lastViewedAt for existing company
-      company = await updateCompanyLastViewed(company.id);
+      company = await updateCompanyLastViewed(company.id as number);
     }
 
     // Create an array of promises for fetching the reports
@@ -53,7 +53,7 @@ export async function fetchAllFinancialReports(symbol: string) {
       await Promise.all(promises);
 
     return { incomeStatements, balanceSheets, cashFlows };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching financial reports:", error);
     throw new Error("Failed to fetch all financial reports");
   }
@@ -98,7 +98,7 @@ export async function getReportsAndMetrics(reports: SelectFinancialReport[]) {
   const promises = reports.map((report) => getFinancialMetrics(report.id));
   const reportsMetrics = await Promise.all(promises);
 
-  return reports.map((report, index) => ({
+  return reports.map((report, index): SelectFinancialReport => ({
     ...report,
     metrics: reportsMetrics[index] ?? [],
   }));
