@@ -4,7 +4,6 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { fetchAllFinancialReports } from "@/server/services/financialReports";
-import CompanyPage from "@/components/companyPage";
 import { fetchCompany } from "@/server/services/companies";
 
 export default async function Page({
