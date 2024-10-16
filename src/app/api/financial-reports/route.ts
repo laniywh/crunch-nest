@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { fetchAllFinancialReports } from "@/server/services/financialReports";
-import { FinancialReports } from "@/types/financialReports";
+import type { FinancialReports } from "@/types/financialReports";
 
 export async function GET(req: NextRequest) {
   const user = auth();
