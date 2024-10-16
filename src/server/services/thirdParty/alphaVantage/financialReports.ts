@@ -1,5 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import {
+import axios from "axios";
+import type { AxiosResponse } from "axios";
+import type {
   AV_FinancialReports,
   FunctionType,
 } from "@/server/services/thirdParty/alphaVantage/types";

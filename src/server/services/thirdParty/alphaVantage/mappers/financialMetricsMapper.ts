@@ -1,4 +1,4 @@
-import { AV_FinancialReport } from "@/server/services/thirdParty/alphaVantage/types";
+import type { AV_FinancialReport } from "@/server/services/thirdParty/alphaVantage/types";
 
 const EXCLUDED_METRICS = ["fiscalDateEnding", "reportedCurrency"];
 
