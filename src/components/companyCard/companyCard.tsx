@@ -20,23 +20,22 @@ export default function CompanyCard({
 
   if (!reports) return <div>Crunching numbers...</div>;
 
-  if (!reports) return <div>Crunching numbers...</div>;
-
   const { incomeStatements, balanceSheets, cashFlows } = reports;
+
   const operatingCashData = marinateChartData(
-    cashFlows,
+    cashFlows as ReportData[],
     "operatingCashflow"
   );
   const netIncomeData = marinateChartData(
-    incomeStatements,
+    incomeStatements as ReportData[],
     "netIncome"
   );
   const bookValueData = marinateChartData(
-    balanceSheets,
+    balanceSheets as ReportData[],
     "totalShareholderEquity"
   );
   const revenueData = marinateChartData(
-    incomeStatements,
+    incomeStatements as ReportData[],
     "totalRevenue"
   );
 
