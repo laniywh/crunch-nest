@@ -30,11 +30,11 @@ export async function GET(_req: NextRequest) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
   try {
-    await db
+    const result = await db
       .select({ id: apiKeys.id })
       .from(apiKeys)
       .where(eq(apiKeys.userId, userId));
-    return NextResponse.json({ hasApiKey: result.length > 0 && !!result[0]?.id });
+    return NextResponse.json({ hasApiKey: Array.isArray(result) && result.length > 0 && !!result[0]?.id });
   } catch (error) {
     console.error("Error fetching API key from database:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
