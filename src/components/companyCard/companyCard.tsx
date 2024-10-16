@@ -7,7 +7,6 @@ import { marinateChartData } from "@/utils/chart";
 import { useReports } from "@/hooks/useReports";
 import useCompany from "@/hooks/useCompany";
 
-
 export default function CompanyCard({
   symbol,
   showTable = false,
@@ -20,28 +19,15 @@ export default function CompanyCard({
 
   if (!reports) return <div>Crunching numbers...</div>;
 
-  const { incomeStatements, balanceSheets, cashFlows } = reports as {
-    incomeStatements: ReportData[];
-    balanceSheets: ReportData[];
-    cashFlows: ReportData[];
-  };
+  const { incomeStatements, balanceSheets, cashFlows } = reports;
 
-  const operatingCashData = marinateChartData(
-    cashFlows,
-    "operatingCashflow"
-  );
-  const netIncomeData = marinateChartData(
-    incomeStatements,
-    "netIncome"
-  );
+  const operatingCashData = marinateChartData(cashFlows, "operatingCashflow");
+  const netIncomeData = marinateChartData(incomeStatements, "netIncome");
   const bookValueData = marinateChartData(
     balanceSheets,
-    "totalShareholderEquity"
+    "totalShareholderEquity",
   );
-  const revenueData = marinateChartData(
-    incomeStatements,
-    "totalRevenue"
-  );
+  const revenueData = marinateChartData(incomeStatements, "totalRevenue");
 
   const latestOperatingCash = numberFormat(getLatestNumber(operatingCashData));
   const latestNetIncome = numberFormat(getLatestNumber(netIncomeData));

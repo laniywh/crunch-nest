@@ -24,3 +24,9 @@ export type Report = {
     metricValue: string;
   }[];
 };
+
+export interface FinancialReports {
+  incomeStatements: Report[];
+  balanceSheets: Report[];
+  cashFlows: Report[];
+}

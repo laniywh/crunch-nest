@@ -1,17 +1,34 @@
-import Header from "@/components/page/header";
-import CompanyCard from "@/components/companyCard/companyCard";
-import CompanyCardList from "@/components/companyCardList";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Companies } from "./companies";
 
-export default function CompaniesPage() {
+async function getRecentCompanies() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/companies/recent`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) throw new Error("Failed to fetch recent companies");
+  return res.json();
+}
+
+export async function generateMetadata() {
+  return { title: "Companies | Crunch Nest" };
+}
+
+export default async function CompaniesPage() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["recentCompanies"],
+    queryFn: getRecentCompanies,
+  });
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <div>
-      <Header>Companies</Header>
-      <CompanyCardList>
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-      </CompanyCardList>
-    </div>
+    <HydrationBoundary state={dehydratedState}>
+      <Companies />
+    </HydrationBoundary>
   );
 }

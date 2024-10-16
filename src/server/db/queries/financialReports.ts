@@ -2,7 +2,7 @@ import type { InsertFinancialReport } from "@/server/db/schema";
 import { companies, financialReports } from "@/server/db/schema";
 import { db } from "@/server/db";
 import type { FunctionType } from "@/server/services/thirdParty/alphaVantage/types";
-import { and, Column, eq, Table } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export async function getFinancialReportsInDb(
   symbol: string,

@@ -5,10 +5,8 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { IoClose } from "react-icons/io5";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
-import {
-  useRecentCompanies,
-  type RecentCompany,
-} from "@/hooks/useRecentCompanies";
+import { useRecentCompanies } from "@/hooks/useRecentCompanies";
+import type { SelectCompany } from "@/server/db/schema";
 
 const MOCK_LISTS = ["Watchlist", "Wish List"];
 
@@ -66,7 +64,7 @@ export default function Sidebar({
               ) : error ? (
                 <li>Error loading recent companies</li>
               ) : (
-                recentlyViewedCompanies?.map((company: RecentCompany) => (
+                recentlyViewedCompanies?.map((company: SelectCompany) => (
                   <li key={company.symbol}>
                     <Link
                       className="flex items-center justify-between rounded p-2 py-1 hover:bg-slate-200"

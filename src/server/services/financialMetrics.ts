@@ -1,7 +1,5 @@
 import type { AV_FinancialReport } from "@/server/services/thirdParty/alphaVantage/types";
 import { convertToFinancialMetrics } from "@/server/services/thirdParty/alphaVantage/mappers/financialMetricsMapper";
-import { db } from "@/server/db";
-import { financialMetrics } from "@/server/db/schema";
 import {
   addFinancialMetricsToDb,
   getFinancialMetricsInDb,

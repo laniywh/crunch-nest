@@ -1,4 +1,4 @@
-export default function numberFormat(value?: number | string) {
+export default function numberFormat(value?: number | string | null) {
   if (!value) return "N/A";
   return Intl.NumberFormat("en-us", {
     currency: "USD",

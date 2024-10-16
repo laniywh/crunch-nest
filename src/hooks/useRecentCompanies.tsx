@@ -1,22 +1,19 @@
+import type { SelectCompany } from "@/server/db/schema";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export interface RecentCompany {
-  symbol: string;
-  name: string;
+async function fetchRecentCompanies(): Promise<SelectCompany[]> {
+  try {
+    const response = await axios.get<SelectCompany[]>("/api/companies/recent");
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch recent companies");
+  }
 }
 
-const fetchRecentCompanies = async (): Promise<RecentCompany[]> => {
-  const { data } = await axios.get<RecentCompany[]>(
-    "/api/companies/recently-viewed",
-  );
-  return data;
-};
-
-export const useRecentCompanies = () => {
-  return useQuery<RecentCompany[], Error>({
+export function useRecentCompanies() {
+  return useQuery<SelectCompany[], Error>({
     queryKey: ["recentCompanies"],
     queryFn: fetchRecentCompanies,
-    staleTime: 5 * 60 * 1000, // 5 minutes
   });
-};
+}

@@ -1,16 +1,25 @@
 import type {
   AV_FinancialReport,
   AV_FinancialReports,
-  SelectCompany,
-  SelectFinancialReport,
 } from "@/server/services/thirdParty/alphaVantage/types";
-import { addCompanyToDb, getCompanyInDb, updateCompanyLastViewedInDb } from "../db/queries/companies";
+import {
+  addCompanyToDb,
+  getCompanyInDb,
+  updateCompanyLastViewedInDb,
+} from "../db/queries/companies";
 import { fetchCompany } from "../services/thirdParty/alphaVantage/company";
 import { fetchFinancialReports } from "../services/thirdParty/alphaVantage/financialReports";
-import { addFinancialReportToDb, getFinancialReportsInDb } from "../db/queries/financialReports";
-import type { ReportFrequency, ReportType } from "../../types";
+import {
+  addFinancialReportToDb,
+  getFinancialReportsInDb,
+} from "../db/queries/financialReports";
+import type { ReportFrequency, ReportType } from "@/types";
 import { convertToFinancialReport } from "../services/thirdParty/alphaVantage/mappers/financialReportMapper";
-import { addFinancialMetrics, getFinancialMetrics } from "../services/financialMetrics";
+import {
+  addFinancialMetrics,
+  getFinancialMetrics,
+} from "@/server/services/financialMetrics";
+import type { SelectCompany, SelectFinancialReport } from "@/server/db/schema";
 
 export async function fetchAllFinancialReports(symbol: string) {
   try {

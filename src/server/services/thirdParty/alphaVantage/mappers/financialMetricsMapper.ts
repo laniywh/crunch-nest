@@ -13,12 +13,12 @@ export function convertToFinancialMetrics(
   }[] = [];
 
   Object.keys(report).forEach((key) => {
-    if (!EXCLUDED_METRICS.includes(key)) {
+    if (!EXCLUDED_METRICS.includes(key) && key in report) {
+      const typedKey = key as keyof AV_FinancialReport;
       metrics.push({
         reportId,
         metricName: key,
-        // @ts-ignore
-        metricValue: report[key],
+        metricValue: report[typedKey],
       });
     }
   });

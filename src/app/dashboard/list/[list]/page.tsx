@@ -7,10 +7,10 @@ export default function ListPage() {
     <div>
       <Header>List Page</Header>
       <CompanyCardList>
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
-        <CompanyCard company={{ name: "Apple Inc.", symbol: "APPL" }} />
+        <CompanyCard symbol={"TSLA"} />
+        <CompanyCard symbol={"TSLA"} />
+        <CompanyCard symbol={"TSLA"} />
+        <CompanyCard symbol={"TSLA"} />
       </CompanyCardList>
     </div>
   );
