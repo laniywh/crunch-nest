@@ -29,7 +29,7 @@ export async function fetchCompany(symbol: string) {
         apikey: apiKey,
       },
     });
-    return convertToCompany(res?.data);
+    return convertToCompany(res?.data as AV_Company);
   } catch (error) {
     // TODO: handle error
     console.error(error);
