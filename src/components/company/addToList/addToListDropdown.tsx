@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdownMenu";
 import { IoAdd } from "react-icons/io5";
 import { useState } from "react";
-import { CreateListDialog } from "../../dialogs/createListDialog";
+import { InputDialog } from "@/components/ui/inputDialog";
 import { useCreateUserListMutation } from "@/hooks/useCreateUserListMutation";
 import type { UserList } from "@/server/db/schema";
 
@@ -54,10 +54,14 @@ export function AddToListDropdown({ userLists }: { userLists?: UserList[] }) {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <CreateListDialog
+      <InputDialog
         isOpen={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        onCreateList={createUserList}
+        onConfirm={createUserList}
+        title="Create a new list"
+        description="Enter the name for your new list."
+        placeholder="New list name"
+        confirmButtonText="Create"
       />
     </>
   );
