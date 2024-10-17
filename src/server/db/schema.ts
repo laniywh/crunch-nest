@@ -1,6 +1,3 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import {
@@ -124,3 +121,43 @@ export const financialMetrics = createTable(
 
 export type SelectFinancialMetric = InferSelectModel<typeof financialMetrics>;
 export type InsertFinancialMetric = InferInsertModel<typeof financialMetrics>;
+
+export const lists = createTable(
+  "lists",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    name: varchar("name", { length: 100 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt", { withTimezone: true }),
+  },
+  (table) => ({
+    nameUniqueIndex: uniqueIndex("name_unique_idx").on(table.name),
+  }),
+);
+
+export type SelectList = InferSelectModel<typeof lists>;
+export type InsertList = InferInsertModel<typeof lists>;
+
+export const companyListMappings = createTable(
+  "companyListMappings",
+  {
+    companyId: integer("company_id")
+      .notNull()
+      .references(() => companies.id),
+    listId: integer("list_id")
+      .notNull()
+      .references(() => lists.id),
+  },
+  (table) => ({
+    primaryKey: uniqueIndex("company_list_pk").on(
+      table.companyId,
+      table.listId,
+    ),
+  }),
+);
+
+// Define the UserList type
+export type UserList = InferSelectModel<typeof lists>;

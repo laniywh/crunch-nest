@@ -7,8 +7,7 @@ import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { useRecentCompanies } from "@/hooks/useRecentCompanies";
 import type { SelectCompany } from "@/server/db/schema";
-
-const MOCK_LISTS = ["Watchlist", "Wish List"];
+import { useUserLists } from "@/hooks/useUserLists";
 
 export default function Sidebar({
   show,
@@ -23,6 +22,7 @@ export default function Sidebar({
     isLoading,
     error,
   } = useRecentCompanies();
+  const { data: userLists = [] } = useUserLists();
 
   const closeSidebar = useCallback(() => {
     setShow(false);
@@ -97,15 +97,14 @@ export default function Sidebar({
               <span id={"list"}>List</span>
             </span>
             <ul>
-              {MOCK_LISTS.map((list) => (
-                <li key={list}>
+              {userLists.map((list) => (
+                <li key={list.id}>
                   <Link
                     className="block rounded p-2 py-1 hover:bg-slate-200"
-                    key={list}
                     href={"/dashboard/list/watchlist"}
                     onClick={closeSidebar}
                   >
-                    {list}
+                    {list.name}
                   </Link>
                 </li>
               ))}

@@ -8,30 +8,42 @@ import { IoAdd } from "react-icons/io5";
 import { useState } from "react";
 import { InputDialog } from "@/components/ui/inputDialog";
 import { useCreateUserListMutation } from "@/hooks/useCreateUserListMutation";
-import type { UserList } from "@/server/db/schema";
+import type { SelectCompany, UserList } from "@/server/db/schema";
+import { useAddCompanyToUserListMutation } from "@/hooks/useAddCompanyToUserListMutation";
 
-export function AddToListDropdown({ userLists }: { userLists?: UserList[] }) {
+export function AddToListDropdown({
+  userLists,
+  company,
+}: {
+  userLists: UserList[];
+  company: SelectCompany;
+}) {
   const { mutateAsync: createUserList } = useCreateUserListMutation();
+  const { mutateAsync: addCompanyToUserList } =
+    useAddCompanyToUserListMutation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newListName, setNewListName] = useState("");
-  const [isInputValid, setIsInputValid] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleCreateList = async () => {
+  const handleConfirmCreateList = async (listName: string) => {
+    if (!listName) return;
+    console.log({ listName });
     try {
-      await createUserList(newListName);
+      const list = await createUserList(listName);
+      console.log({ list });
+      await handleAddToList(list.id);
+
       setIsDialogOpen(false);
-      setNewListName("");
-      setIsInputValid(false);
     } catch (error) {
       console.error("Error creating user list:", error);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewListName(e.target.value);
-    const trimmedValue = e.target.value.trim();
-    setIsInputValid(trimmedValue !== "");
+  const handleAddToList = async (listId: number) => {
+    try {
+      await addCompanyToUserList({ listId, companyId: company.id });
+    } catch (error) {
+      console.error("Error adding company to user list:", error);
+    }
   };
 
   return (
@@ -41,23 +53,28 @@ export function AddToListDropdown({ userLists }: { userLists?: UserList[] }) {
           <IoAdd size={20} /> Add to list
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          {userLists?.map((list) => (
+            <DropdownMenuItem
+              key={list.id}
+              onClick={() => handleAddToList(list.id)}
+            >
+              {list.name}
+            </DropdownMenuItem>
+          ))}
           <DropdownMenuItem
             onClick={() => {
               setIsDialogOpen(true);
               setIsDropdownOpen(false);
             }}
           >
-            Create a list
+            <IoAdd size={20} /> Add new list
           </DropdownMenuItem>
-          {userLists?.map((list) => (
-            <DropdownMenuItem key={list.id}>{list.name}</DropdownMenuItem>
-          ))}
         </DropdownMenuContent>
       </DropdownMenu>
       <InputDialog
         isOpen={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        onConfirm={createUserList}
+        onConfirm={handleConfirmCreateList}
         title="Create a new list"
         description="Enter the name for your new list."
         placeholder="New list name"

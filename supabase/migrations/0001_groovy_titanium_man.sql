@@ -1,0 +1,1 @@
+ALTER TABLE "cn_lists" ADD COLUMN "user_id" varchar(256) NOT NULL;
