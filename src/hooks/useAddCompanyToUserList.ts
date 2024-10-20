@@ -1,17 +1,19 @@
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
+async function addCompanyToList({
+  listId,
+  companyId,
+}: {
+  listId: string;
+  companyId: string;
+}) {
+  await axios.post("/api/user-lists/add-company", {
+    listId,
+    companyId,
+  });
+}
 
 export function useAddCompanyToUserList() {
-  return useMutation(async ({ listId, companyId }: { listId: string; companyId: string }) => {
-    const response = await fetch("/api/user-lists/add-company", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ listId, companyId }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to add company to list");
-    }
-  });
+  return useMutation({ mutationFn: addCompanyToList });
 }
