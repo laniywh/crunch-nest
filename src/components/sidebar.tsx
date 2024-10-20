@@ -134,6 +134,7 @@ export default function Sidebar({
   );
 }
 
+// TODO: fix hydration error
 const UserSection = () => {
   const { user } = useUser();
 

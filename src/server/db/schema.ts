@@ -122,8 +122,8 @@ export const financialMetrics = createTable(
 export type SelectFinancialMetric = InferSelectModel<typeof financialMetrics>;
 export type InsertFinancialMetric = InferInsertModel<typeof financialMetrics>;
 
-export const lists = createTable(
-  "lists",
+export const userLists = createTable(
+  "userLists",
   {
     id: serial("id").primaryKey(),
     userId: varchar("user_id", { length: 256 }).notNull(),
@@ -138,8 +138,8 @@ export const lists = createTable(
   }),
 );
 
-export type SelectList = InferSelectModel<typeof lists>;
-export type InsertList = InferInsertModel<typeof lists>;
+export type SelectUserList = InferSelectModel<typeof userLists>;
+export type InsertUserList = InferInsertModel<typeof userLists>;
 
 export const companyListMappings = createTable(
   "companyListMappings",
@@ -149,7 +149,7 @@ export const companyListMappings = createTable(
       .references(() => companies.id),
     listId: integer("list_id")
       .notNull()
-      .references(() => lists.id),
+      .references(() => userLists.id),
   },
   (table) => ({
     primaryKey: uniqueIndex("company_list_pk").on(
@@ -158,6 +158,3 @@ export const companyListMappings = createTable(
     ),
   }),
 );
-
-// Define the UserList type
-export type UserList = InferSelectModel<typeof lists>;

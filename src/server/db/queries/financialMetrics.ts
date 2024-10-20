@@ -14,8 +14,8 @@ export async function addFinancialMetricsToDb(
       .values(metrics)
       .returning({ id: financialMetrics.id });
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error adding financial metrics");
+    console.error("Database error - Error adding financial metrics:", error);
+    throw new Error("Internal Server Error");
   }
 }
 
@@ -28,7 +28,7 @@ export async function getFinancialMetricsInDb(reportId: number) {
 
     return metrics;
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error getting financial metrics");
+    console.error("Database error - Error getting financial metrics:", error);
+    throw new Error("Internal Server Error");
   }
 }

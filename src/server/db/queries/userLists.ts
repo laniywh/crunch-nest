@@ -1,27 +1,31 @@
 import { db } from "@/server/db";
-import { lists, companyListMappings } from "@/server/db/schema";
-import type { AddCompanyToUserListParams } from "@/server/services/addCompanyToUserList";
+import { userLists, companyListMappings } from "@/server/db/schema";
+import type { AddCompanyToUserListParams } from "@/server/services/userLists";
+import type { UserCompanyList } from "@/types/lists";
 import { eq, and } from "drizzle-orm";
 
 export async function getUserListsInDb(userId: string) {
   try {
-    return await db.select().from(lists).where(eq(lists.userId, userId));
+    return await db
+      .select()
+      .from(userLists)
+      .where(eq(userLists.userId, userId));
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error getting user lists");
+    console.error("Database error - Error getting user lists:", error);
+    throw new Error("Internal Server Error");
   }
 }
 
 export async function createUserListInDb(userId: string, listName: string) {
   try {
     const result = await db
-      .insert(lists)
+      .insert(userLists)
       .values({ userId, name: listName })
       .returning();
     return result[0];
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error creating user list");
+    console.error("Database error - Error creating user list:", error);
+    throw new Error("Internal Server Error");
   }
 }
 
@@ -32,7 +36,7 @@ export async function addCompanyToUserListInDb(
   try {
     return await db.insert(companyListMappings).values({ companyId, listId });
   } catch (error) {
-    console.error("Error adding company to user list:", error);
+    console.error("Database Error - Error adding company to user list:", error);
     throw new Error("Internal Server Error");
   }
 }
@@ -40,24 +44,24 @@ export async function addCompanyToUserListInDb(
 export const getUserCompanyListsInDb = async (
   userId: string,
   companyId: number,
-) => {
+): Promise<UserCompanyList[]> => {
   try {
     return await db
       .select({
-        listId: companyListMappings.listId,
-        listName: lists.name,
+        id: companyListMappings.listId,
+        name: userLists.name,
       })
       .from(companyListMappings)
-      .innerJoin(lists, eq(companyListMappings.listId, lists.id))
+      .innerJoin(userLists, eq(companyListMappings.listId, userLists.id))
       .where(
         and(
           eq(companyListMappings.companyId, companyId),
-          eq(lists.userId, userId),
+          eq(userLists.userId, userId),
         ),
       )
       .execute();
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error fetching user company lists");
+    console.error("Database error - Error fetching user company lists:", error);
+    throw new Error("Internal Server Error");
   }
 };

@@ -10,7 +10,7 @@ export async function getApiKeyInDb(userId: string) {
       .where(eq(apiKeys.userId, userId));
     return res?.[0]?.key;
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error getting api key");
+    console.error("Database error - Error getting api key", error);
+    throw new Error("Internal Server Error");
   }
 }

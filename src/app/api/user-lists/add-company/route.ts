@@ -1,7 +1,7 @@
 import {
   addCompanyToUserList,
   type AddCompanyToUserListParams,
-} from "@/server/services/addCompanyToUserList";
+} from "@/server/services/userLists";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 

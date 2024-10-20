@@ -5,7 +5,7 @@ import CompanyCardList from "@/components/companyCardList";
 import { useRecentCompanies } from "@/hooks/useRecentCompanies";
 
 export function Companies() {
-  const { data: companies, isLoading, isError, error } = useRecentCompanies();
+  const { data: companies, isLoading, isError } = useRecentCompanies();
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching companies</div>;

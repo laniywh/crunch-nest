@@ -31,8 +31,8 @@ export async function getFinancialReportsInDb(
 
     return res;
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error getting financial report");
+    console.error("Database error - Error getting financial report:", error);
+    throw new Error("Internal Server Error");
   }
 }
 
@@ -48,7 +48,7 @@ export async function addFinancialReportToDb(
 
     return newReports[0];
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error getting financial report");
+    console.error("Database error - Error getting financial report:", error);
+    throw new Error("Internal Server Error");
   }
 }

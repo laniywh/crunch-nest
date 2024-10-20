@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
-import type { SelectList } from "@/server/db/schema";
+import type { SelectUserList } from "@/server/db/schema";
 
 const fetchUserCompanyLists = async (userId: string, companyId: number) => {
-  const response = await axios.get<SelectList[]>(
+  const response = await axios.get<SelectUserList[]>(
     `/api/user-lists/company-lists?userId=${userId}&companyId=${companyId}`,
   );
   return response.data;

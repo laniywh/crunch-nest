@@ -1,5 +1,5 @@
-import type { SelectList } from "@/server/db/schema";
-import type { AddCompanyToUserListParams } from "@/server/services/addCompanyToUserList";
+import type { SelectUserList } from "@/server/db/schema";
+import type { AddCompanyToUserListParams } from "@/server/services/userLists";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRecentCompanies } from "@/hooks/useRecentCompanies";
@@ -9,10 +9,13 @@ async function addCompanyToUserList({
   listId,
   companyId,
 }: AddCompanyToUserListParams) {
-  const response = await axios.post<SelectList>("/api/user-lists/add-company", {
-    listId,
-    companyId,
-  });
+  const response = await axios.post<SelectUserList>(
+    "/api/user-lists/add-company",
+    {
+      listId,
+      companyId,
+    },
+  );
   return response.data;
 }
 

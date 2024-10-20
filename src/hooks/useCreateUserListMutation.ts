@@ -1,10 +1,9 @@
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useRecentCompanies } from "./useRecentCompanies";
 
 type CreateUserListResponse = {
-  id: string;
+  id: number;
   userId: string;
   name: string;
 };
@@ -26,13 +25,10 @@ export function useCreateUserListMutation() {
   const { user } = useUser();
   const userId = user?.id;
   const queryClient = useQueryClient();
-  const { data: recentCompanies } = useRecentCompanies();
-  console.log({ recentCompanies });
 
   return useMutation({
     mutationFn: createUserList,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userLists", userId] });
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["userLists", userId] }),
   });
 }

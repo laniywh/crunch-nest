@@ -38,7 +38,9 @@ export default function CompanyPage({
 
   return (
     <div>
-      <CompanyPageHeader company={company} userLists={userLists} />
+      {company && userLists && (
+        <CompanyPageHeader company={company} userLists={userLists} />
+      )}
       <CompanyCard symbol={symbol} showTable />
     </div>
   );

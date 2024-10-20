@@ -8,14 +8,14 @@ import { IoAdd } from "react-icons/io5";
 import { useState } from "react";
 import { InputDialog } from "@/components/ui/inputDialog";
 import { useCreateUserListMutation } from "@/hooks/useCreateUserListMutation";
-import type { SelectCompany, UserList } from "@/server/db/schema";
+import type { SelectCompany, SelectUserList } from "@/server/db/schema";
 import { useAddCompanyToUserListMutation } from "@/hooks/useAddCompanyToUserListMutation";
 
 export function AddToListDropdown({
   userLists,
   company,
 }: {
-  userLists: UserList[];
+  userLists: SelectUserList[];
   company: SelectCompany;
 }) {
   const { mutateAsync: createUserList } = useCreateUserListMutation();

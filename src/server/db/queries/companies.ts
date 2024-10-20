@@ -17,8 +17,8 @@ export async function getCompanyInDb(
 
     return res[0];
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error getting company");
+    console.error("Database error - Error getting company:", error);
+    throw new Error("Internal Server Error");
   }
 }
 
@@ -37,8 +37,8 @@ export async function addCompanyToDb(
 
     return insertedCompanies[0] as SelectCompany;
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error adding company");
+    console.error("Database error - Error adding company:", error);
+    throw new Error("Internal Server Error");
   }
 }
 
@@ -58,8 +58,11 @@ export async function updateCompanyLastViewedInDb(
 
     return updatedCompanies[0] as SelectCompany;
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error updating company last viewed timestamp");
+    console.error(
+      "Database error - Error updating company last viewed timestamp:",
+      error,
+    );
+    throw new Error("Internal Server Error");
   }
 }
 
@@ -75,7 +78,10 @@ export async function getRecentlyViewedCompanies(
 
     return recentCompanies;
   } catch (error) {
-    console.error("Database error:", error);
-    throw new Error("Error fetching recently viewed companies");
+    console.error(
+      "Database error - Error fetching recently viewed companies:",
+      error,
+    );
+    throw new Error("Internal Server Error");
   }
 }

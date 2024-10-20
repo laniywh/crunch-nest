@@ -1,6 +1,6 @@
 import Header from "@/components/page/header";
 import { AddToListDropdown } from "./addToList/addToListDropdown";
-import type { SelectCompany, UserList } from "@/server/db/schema";
+import type { SelectCompany, SelectUserList } from "@/server/db/schema";
 import { useUserCompanyLists } from "@/hooks/useUserCompanyLists";
 
 export function CompanyPageHeader({
@@ -8,7 +8,7 @@ export function CompanyPageHeader({
   userLists,
 }: {
   company: SelectCompany;
-  userLists: UserList[];
+  userLists: SelectUserList[];
 }) {
   const { data: lists, isLoading, isError } = useUserCompanyLists(company?.id);
 
@@ -30,9 +30,9 @@ export function CompanyPageHeader({
               {lists?.map((list) => (
                 <li
                   className="inline-block rounded-md bg-orange-200 p-1 text-xs text-slate-600"
-                  key={list.listId}
+                  key={list.id}
                 >
-                  {list.listName}
+                  {list.name}
                 </li>
               ))}
             </ul>

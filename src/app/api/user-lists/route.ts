@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { createUserList } from "@/server/services/createUserList";
 import { auth } from "@clerk/nextjs/server";
-import { getUserListsInDb } from "@/server/db/queries/lists";
+import { createUserList, getUserLists } from "@/server/services/userLists";
 
 export async function POST(req: Request) {
   const user = auth();
@@ -29,7 +28,7 @@ export async function GET() {
     return new NextResponse("Unauthorized", { status: 401 });
   }
   try {
-    const result = await getUserListsInDb(userId);
+    const result = await getUserLists();
     return NextResponse.json(result);
   } catch (error) {
     console.error("API error:", error);

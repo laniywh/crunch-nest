@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserCompanyLists } from "@/server/services/lists";
+import { getUserCompanyLists } from "@/server/services/userLists";
 
 export async function GET(req: Request) {
   try {
