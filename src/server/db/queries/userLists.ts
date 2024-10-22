@@ -65,3 +65,36 @@ export const getUserCompanyListsInDb = async (
     throw new Error("Internal Server Error");
   }
 };
+
+export async function removeUserListInDb(userId: string, listId: number) {
+  try {
+    return await db
+      .delete(userLists)
+      .where(and(eq(userLists.userId, userId), eq(userLists.id, listId)));
+  } catch (error) {
+    console.error("Database error - Error removing user company list:", error);
+    throw new Error("Internal Server Error");
+  }
+}
+
+export async function removeCompanyFromUserListInDb(
+  listId: number,
+  companyId: number,
+) {
+  try {
+    return await db
+      .delete(companyListMappings)
+      .where(
+        and(
+          eq(companyListMappings.listId, listId),
+          eq(companyListMappings.companyId, companyId),
+        ),
+      );
+  } catch (error) {
+    console.error(
+      "Database error - Error removing company from user list:",
+      error,
+    );
+    throw new Error("Internal Server Error");
+  }
+}

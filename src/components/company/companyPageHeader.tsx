@@ -2,8 +2,10 @@ import Header from "@/components/page/header";
 import { AddToListDropdown } from "./addToList/addToListDropdown";
 import type { SelectCompany, SelectUserList } from "@/server/db/schema";
 import { useUserCompanyLists } from "@/hooks/useUserCompanyLists";
+import { IoClose } from "react-icons/io5";
+import { useRemoveCompanyFromUserList } from "@/hooks/useRemoveCompanyFromUserList";
 
-export function CompanyPageHeader({
+export default function CompanyPageHeader({
   company,
   userLists,
 }: {
@@ -11,6 +13,16 @@ export function CompanyPageHeader({
   userLists: SelectUserList[];
 }) {
   const { data: lists, isLoading, isError } = useUserCompanyLists(company?.id);
+  const removeCompanyFromUserList = useRemoveCompanyFromUserList(company?.id);
+
+  const handleRemoveCompany = (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    listId: number,
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+    removeCompanyFromUserList.mutate({ listId, companyId: company.id });
+  };
 
   return (
     <header className="flex items-center justify-between py-4">
@@ -26,13 +38,22 @@ export function CompanyPageHeader({
               Error loading lists
             </span>
           ) : (
-            <ul className="space-x-2">
+            <ul className="flex flex-wrap gap-2">
               {lists?.map((list) => (
                 <li
-                  className="inline-block rounded-md bg-orange-200 p-1 text-xs text-slate-600"
                   key={list.id}
+                  className="group relative inline-flex cursor-pointer items-center overflow-hidden rounded-md bg-orange-200 text-xs text-slate-600"
                 >
-                  {list.name}
+                  <div className="absolute h-full w-full">
+                    <IoClose
+                      className="peer absolute right-[3px] top-[6px] z-10 h-3 w-3 transition-all duration-200"
+                      onClick={(e) => handleRemoveCompany(e, list.id)}
+                    />
+                    <div className="absolute inset-0 z-0 -m-1 rounded bg-red-200 opacity-0 transition-opacity duration-200 peer-hover:opacity-100" />
+                  </div>
+                  <span className="relative mr-1 px-2 py-1 pr-3 ">
+                    {list.name}
+                  </span>
                 </li>
               ))}
             </ul>

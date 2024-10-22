@@ -3,12 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 async function fetchRecentCompanies(): Promise<SelectCompany[]> {
-  try {
-    const response = await axios.get<SelectCompany[]>("/api/companies/recent");
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch recent companies");
-  }
+  const response = await axios.get<SelectCompany[]>("/api/companies/recent");
+  return response.data;
 }
 
 export function useRecentCompanies() {

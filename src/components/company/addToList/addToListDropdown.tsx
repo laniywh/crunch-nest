@@ -19,8 +19,9 @@ export function AddToListDropdown({
   company: SelectCompany;
 }) {
   const { mutateAsync: createUserList } = useCreateUserListMutation();
-  const { mutateAsync: addCompanyToUserList } =
-    useAddCompanyToUserListMutation();
+  const { mutateAsync: addCompanyToUserList } = useAddCompanyToUserListMutation(
+    company?.id,
+  );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 

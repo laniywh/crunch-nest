@@ -5,7 +5,7 @@ import useCompany from "@/hooks/useCompany";
 import type { SelectCompany } from "@/server/db/schema";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUserLists } from "@/hooks/useUserLists";
-import { CompanyPageHeader } from "@/components/company/companyPageHeader";
+import CompanyPageHeader from "@/components/company/companyPageHeader";
 
 export default function CompanyPage({
   params: { symbol },

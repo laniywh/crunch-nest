@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserListsInDb } from "@/server/db/queries/userLists";
 import type { SelectUserList } from "@/server/db/schema";
 import { createUserListInDb } from "@/server/db/queries/userLists";
+import { removeUserListInDb } from "@/server/db/queries/userLists";
+import { removeCompanyFromUserListInDb } from "@/server/db/queries/userLists";
 
 export async function createUserList(userId: string, listName: string) {
   try {
@@ -45,10 +47,11 @@ export async function addCompanyToUserList(params: AddCompanyToUserListParams) {
   }
 }
 
-export const getUserCompanyLists = async (
-  userId: string,
-  companyId: number,
-) => {
+export const getUserCompanyLists = async (companyId: number) => {
+  const userId = auth()?.userId;
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
   try {
     const lists = await getUserCompanyListsInDb(userId, companyId);
     return lists;
@@ -57,3 +60,28 @@ export const getUserCompanyLists = async (
     throw new Error("Error fetching user company lists");
   }
 };
+
+export async function removeUserList(listId: number) {
+  const userId = auth()?.userId;
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+  try {
+    await removeUserListInDb(userId, listId);
+  } catch (error) {
+    console.error("Service error:", error);
+    throw new Error("Error removing user company list");
+  }
+}
+
+export async function removeCompanyFromUserList(
+  listId: number,
+  companyId: number,
+) {
+  try {
+    await removeCompanyFromUserListInDb(listId, companyId);
+  } catch (error) {
+    console.error("Service error:", error);
+    throw new Error("Error removing company from user list");
+  }
+}
