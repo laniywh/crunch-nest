@@ -1,22 +1,20 @@
+"use client";
 import Link from "next/link";
 import { MdRemoveRedEye } from "react-icons/md";
 import { FaListUl } from "react-icons/fa";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { IoClose } from "react-icons/io5";
-import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { useCallback } from "react";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { useRecentCompanies } from "@/hooks/useRecentCompanies";
 import type { SelectCompany } from "@/server/db/schema";
 import { useUserLists } from "@/hooks/useUserLists";
+import { useSidebarStore } from "@/stores/sidebarStore";
 
-export default function Sidebar({
-  show,
-  setShow,
-}: {
-  show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
-}) {
-  const ref = useClickOutside(() => setShow(false));
+export default function Sidebar() {
+  const showSidebar = useSidebarStore((state) => state.showSidebar);
+  const setShowSidebar = useSidebarStore((state) => state.setShowSidebar);
+  const ref = useClickOutside(() => setShowSidebar(false));
   const {
     data: recentlyViewedCompanies,
     isLoading,
@@ -25,12 +23,12 @@ export default function Sidebar({
   const { data: userLists = [] } = useUserLists();
 
   const closeSidebar = useCallback(() => {
-    setShow(false);
-  }, [setShow]);
+    setShowSidebar(false);
+  }, [setShowSidebar]);
 
   return (
     <aside
-      className={`absolute ${show ? "right-0" : "-right-[240px]"} z-10 grid h-screen w-full max-w-[240px] grid-rows-[1fr_auto] bg-slate-100 md:static`}
+      className={`absolute ${showSidebar ? "right-0" : "-right-[240px]"} z-10 grid h-screen w-full max-w-[240px] grid-rows-[1fr_auto] bg-slate-100 md:static`}
       ref={ref}
       aria-label="Main navigation sidebar"
       id="sidebar"

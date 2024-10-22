@@ -1,27 +1,43 @@
-"use client";
-import Sidebar from "@/components/sidebar";
 import DashboardContent from "@/components/dashboard/dashboardContent";
-import { useState } from "react";
+import Sidebar from "@/components/sidebar";
+import { getRecentCompanies } from "@/server/services/companies";
+import { getUserLists } from "@/server/services/userLists";
 import { cn } from "@/utils/ui";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [showSidebar, setShowSidebar] = useState(false);
+  const queryClient = new QueryClient();
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: ["userLists"],
+      queryFn: getUserLists,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["recentCompanies"],
+      queryFn: getRecentCompanies,
+    }),
+  ]);
+
   return (
-    <div className={`animate-in block h-screen grid-cols-[240px_1fr] md:grid`}>
-      <Sidebar show={showSidebar} setShow={setShowSidebar} />
-      <DashboardContent
-        setShowSidebar={setShowSidebar}
-        className={cn(
-          "overflow-x-hidden md:overflow-y-scroll",
-          showSidebar ? "h-screen overflow-hidden" : "",
-        )}
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div
+        className={`block h-screen grid-cols-[240px_1fr] animate-in md:grid`}
       >
-        {children}
-      </DashboardContent>
-    </div>
+        <Sidebar />
+        <DashboardContent
+          className={cn("overflow-x-hidden md:overflow-y-scroll")}
+        >
+          {children}
+        </DashboardContent>
+      </div>
+    </HydrationBoundary>
   );
 }

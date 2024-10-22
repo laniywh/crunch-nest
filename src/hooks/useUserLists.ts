@@ -1,9 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import type { SelectUserList } from "@/server/db/schema";
-import { useUser } from "@clerk/nextjs";
 
-async function fetchUserLists(): Promise<SelectUserList[]> {
+export async function fetchUserLists(): Promise<SelectUserList[]> {
   try {
     const response = await axios.get<SelectUserList[]>("/api/user-lists");
     return response.data;
@@ -13,11 +12,8 @@ async function fetchUserLists(): Promise<SelectUserList[]> {
 }
 
 export function useUserLists() {
-  const { user } = useUser();
-  const userId = user?.id;
-
-  return useQuery<SelectUserList[], Error>({
-    queryKey: ["userLists", userId],
+  return useSuspenseQuery<SelectUserList[], Error>({
+    queryKey: ["userLists"],
     queryFn: fetchUserLists,
   });
 }

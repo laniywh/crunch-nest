@@ -1,5 +1,5 @@
 import type { SelectCompany } from "@/server/db/schema";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 async function fetchRecentCompanies(): Promise<SelectCompany[]> {
@@ -8,7 +8,7 @@ async function fetchRecentCompanies(): Promise<SelectCompany[]> {
 }
 
 export function useRecentCompanies() {
-  return useQuery<SelectCompany[], Error>({
+  return useSuspenseQuery<SelectCompany[], Error>({
     queryKey: ["recentCompanies"],
     queryFn: fetchRecentCompanies,
   });
