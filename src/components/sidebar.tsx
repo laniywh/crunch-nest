@@ -99,7 +99,7 @@ export default function Sidebar() {
                 <li key={list.id}>
                   <Link
                     className="block rounded p-2 py-1 hover:bg-slate-200"
-                    href={"/dashboard/list/watchlist"}
+                    href={`/dashboard/list/${list.name}`}
                     onClick={closeSidebar}
                   >
                     {list.name}

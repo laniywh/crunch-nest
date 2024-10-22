@@ -4,6 +4,7 @@ import type { SelectCompany, SelectUserList } from "@/server/db/schema";
 import { useUserCompanyLists } from "@/hooks/useUserCompanyLists";
 import { IoClose } from "react-icons/io5";
 import { useRemoveCompanyFromUserList } from "@/hooks/useRemoveCompanyFromUserList";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CompanyPageHeader({
   company,
@@ -14,14 +15,26 @@ export default function CompanyPageHeader({
 }) {
   const { data: lists, isLoading, isError } = useUserCompanyLists(company?.id);
   const removeCompanyFromUserList = useRemoveCompanyFromUserList(company?.id);
+  const queryClient = useQueryClient();
 
-  const handleRemoveCompany = (
+  const handleRemoveCompany = async (
     e: React.MouseEvent<SVGElement, MouseEvent>,
     listId: number,
+    listName: string,
   ) => {
     e.stopPropagation();
     e.preventDefault();
-    removeCompanyFromUserList.mutate({ listId, companyId: company.id });
+    try {
+      await removeCompanyFromUserList.mutateAsync({
+        listId,
+        companyId: company.id,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["userListCompanies", listName],
+      });
+    } catch (error) {
+      console.error("Error removing company from user list:", error);
+    }
   };
 
   return (
@@ -47,7 +60,9 @@ export default function CompanyPageHeader({
                   <div className="absolute h-full w-full">
                     <IoClose
                       className="peer absolute right-[3px] top-[6px] z-10 h-3 w-3 transition-all duration-200"
-                      onClick={(e) => handleRemoveCompany(e, list.id)}
+                      onClick={(e) =>
+                        handleRemoveCompany(e, list.id, list.name)
+                      }
                     />
                     <div className="absolute inset-0 z-0 -m-1 rounded bg-red-200 opacity-0 transition-opacity duration-200 peer-hover:opacity-100" />
                   </div>

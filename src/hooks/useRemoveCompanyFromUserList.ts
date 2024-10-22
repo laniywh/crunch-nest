@@ -17,11 +17,11 @@ export async function removeCompanyFromUserList({
 }
 
 export function useRemoveCompanyFromUserList(companyId: number) {
-  const QueryClient = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: removeCompanyFromUserList,
     onSuccess: () =>
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["userCompanyLists", companyId],
       }),
   });

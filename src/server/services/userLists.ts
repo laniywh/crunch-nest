@@ -1,11 +1,14 @@
-import { getUserCompanyListsInDb } from "@/server/db/queries/userLists";
-import { addCompanyToUserListInDb } from "@/server/db/queries/userLists";
+import {
+  getUserCompanyListsInDb,
+  addCompanyToUserListInDb,
+  getUserListsInDb,
+  createUserListInDb,
+  removeUserListInDb,
+  removeCompanyFromUserListInDb,
+  getUserListCompaniesInDb,
+} from "@/server/db/queries/userLists";
 import { auth } from "@clerk/nextjs/server";
-import { getUserListsInDb } from "@/server/db/queries/userLists";
 import type { SelectUserList } from "@/server/db/schema";
-import { createUserListInDb } from "@/server/db/queries/userLists";
-import { removeUserListInDb } from "@/server/db/queries/userLists";
-import { removeCompanyFromUserListInDb } from "@/server/db/queries/userLists";
 
 export async function createUserList(userId: string, listName: string) {
   try {
@@ -83,5 +86,15 @@ export async function removeCompanyFromUserList(
   } catch (error) {
     console.error("Service error:", error);
     throw new Error("Error removing company from user list");
+  }
+}
+
+export async function getUserListCompanies(listName: string) {
+  try {
+    const companies = await getUserListCompaniesInDb(listName);
+    return companies;
+  } catch (error) {
+    console.error("Service error:", error);
+    throw new Error("Error fetching user list companies");
   }
 }

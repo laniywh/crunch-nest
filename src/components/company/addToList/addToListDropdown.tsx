@@ -10,6 +10,7 @@ import { InputDialog } from "@/components/ui/inputDialog";
 import { useCreateUserListMutation } from "@/hooks/useCreateUserListMutation";
 import type { SelectCompany, SelectUserList } from "@/server/db/schema";
 import { useAddCompanyToUserListMutation } from "@/hooks/useAddCompanyToUserListMutation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function AddToListDropdown({
   userLists,
@@ -24,24 +25,25 @@ export function AddToListDropdown({
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleConfirmCreateList = async (listName: string) => {
     if (!listName) return;
-    console.log({ listName });
     try {
       const list = await createUserList(listName);
-      console.log({ list });
-      await handleAddToList(list.id);
-
+      await handleAddToList(list.id, listName);
       setIsDialogOpen(false);
     } catch (error) {
       console.error("Error creating user list:", error);
     }
   };
 
-  const handleAddToList = async (listId: number) => {
+  const handleAddToList = async (listId: number, listName: string) => {
     try {
       await addCompanyToUserList({ listId, companyId: company.id });
+      queryClient.invalidateQueries({
+        queryKey: ["userListCompanies", listName],
+      });
     } catch (error) {
       console.error("Error adding company to user list:", error);
     }
@@ -57,7 +59,7 @@ export function AddToListDropdown({
           {userLists?.map((list) => (
             <DropdownMenuItem
               key={list.id}
-              onClick={() => handleAddToList(list.id)}
+              onClick={() => handleAddToList(list.id, list.name)}
             >
               {list.name}
             </DropdownMenuItem>

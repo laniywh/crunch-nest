@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { userLists, companyListMappings } from "@/server/db/schema";
+import { userLists, companyListMappings, companies } from "@/server/db/schema";
 import type { AddCompanyToUserListParams } from "@/server/services/userLists";
 import type { UserCompanyList } from "@/types/lists";
 import { eq, and } from "drizzle-orm";
@@ -93,6 +93,26 @@ export async function removeCompanyFromUserListInDb(
   } catch (error) {
     console.error(
       "Database error - Error removing company from user list:",
+      error,
+    );
+    throw new Error("Internal Server Error");
+  }
+}
+
+export async function getUserListCompaniesInDb(listName: string) {
+  try {
+    return await db
+      .select({
+        symbol: companies.symbol,
+        name: companies.name,
+      })
+      .from(companyListMappings)
+      .innerJoin(companies, eq(companyListMappings.companyId, companies.id))
+      .innerJoin(userLists, eq(companyListMappings.listId, userLists.id))
+      .where(eq(userLists.name, listName));
+  } catch (error) {
+    console.error(
+      "Database error - Error fetching user list companies:",
       error,
     );
     throw new Error("Internal Server Error");
