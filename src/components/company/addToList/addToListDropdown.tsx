@@ -41,7 +41,7 @@ export function AddToListDropdown({
   const handleAddToList = async (listId: number, listName: string) => {
     try {
       await addCompanyToUserList({ listId, companyId: company.id });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ["userListCompanies", listName],
       });
     } catch (error) {

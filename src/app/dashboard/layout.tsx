@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import DashboardContent from "@/components/dashboard/dashboardContent";
 import Sidebar from "@/components/sidebar";
 import { getRecentCompanies } from "@/server/services/companies";

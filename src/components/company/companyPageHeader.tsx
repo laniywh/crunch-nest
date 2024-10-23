@@ -29,7 +29,7 @@ export default function CompanyPageHeader({
         listId,
         companyId: company.id,
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ["userListCompanies", listName],
       });
     } catch (error) {

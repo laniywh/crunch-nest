@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Header from "@/components/page/header";
 import ApiKeySetting from "@/components/settings/apiKeySetting";
 import { getApiKey } from "@/server/services/apiKeys";
